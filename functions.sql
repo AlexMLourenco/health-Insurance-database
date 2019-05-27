@@ -1,4 +1,4 @@
--- Gets client info
+-- Gets client info (checked)
 GO
 CREATE FUNCTION [SeguradoraSaude].GetClientInfo (@clientID INT)
 RETURNS TABLE
@@ -12,7 +12,7 @@ AS
         WHERE P.NIF=@clientID
     );
  
--- Gets Doctor info
+-- Gets Doctor info (checked)
 GO
 CREATE FUNCTION [SeguradoraSaude].GetDoctorInfo (@doctorID INT)
 RETURNS TABLE
@@ -26,7 +26,7 @@ AS
         WHERE P.NIF=@doctorID
     );
  
--- Gets Secretary info
+-- Gets Secretary info (checked)
 GO
 CREATE FUNCTION [SeguradoraSaude].GetSecretaryInfo (@secretaryID INT)
 RETURNS TABLE
