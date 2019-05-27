@@ -5,5 +5,15 @@
 	-> SeguradoraSaude_ER.pdf
 
 # database
+
+## Tables
 	
 	-> SeguradoraSaude.sql
+	
+## Procedures and Triggers
+
+	-> procedures.sql
+	
+## Functions
+
+	-> functions.sql
