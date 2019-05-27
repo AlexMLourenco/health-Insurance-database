@@ -1,11 +1,11 @@
 ---------------------------------LOGIN--------------------------------
 ----------------------------------------------------------------------
 
--- Get type [Client, Doctor or Secretary] for login
+-- Get type [Client, Doctor or Secretary] for login (checked)
 GO
 CREATE PROCEDURE [SeguradoraSaude].GetPersonType @userID INT, @output VARCHAR(15) OUTPUT
 AS
-    IF EXISTS(SELECT * FROM [SeguradoraSaude].Cliente WHERE NIF=@userID)
+    IF EXISTS(SELECT * FROM [SeguradoraSaude].Cliente WHERE NIFCliente=@userID)
     BEGIN
         SET @output = 'client';
     END
@@ -18,7 +18,7 @@ AS
         SET @output = 'secretary';
     END
 
--- Get Login type
+-- Get Login type (checked)
 GO
 CREATE PROCEDURE [SeguradoraSaude].GetLoginType @userName VARCHAR(15)
 AS
@@ -28,7 +28,7 @@ AS
     WHERE username=@userName
  
  
--- Get person ID
+-- Get person ID (checked)
 GO
 CREATE PROCEDURE [SeguradoraSaude].GetPersonID @userName VARCHAR(15)
 AS
@@ -37,7 +37,7 @@ AS
     FROM [SeguradoraSaude].Login 
     WHERE username=@userName
  
--- Get Login
+-- Get Login (checked)
 GO
 CREATE PROCEDURE [SeguradoraSaude].GetLogin @username VARCHAR(15), @password VARCHAR(32)
 AS
@@ -49,7 +49,7 @@ AS
 ---------------------------------LISTS--------------------------------
 ----------------------------------------------------------------------
  
--- Get users list
+-- Get users list (checked)
 GO
 CREATE PROCEDURE [SeguradoraSaude].GetUserList
 AS
@@ -57,7 +57,7 @@ AS
     SELECT Nome 
     FROM [SeguradoraSaude].Pessoa
 
--- Get clients list
+-- Get clients list (checked)
 GO
 CREATE PROCEDURE [SeguradoraSaude].GetClientList
 AS
@@ -66,7 +66,7 @@ AS
     JOIN [SeguradoraSaude].Pessoa AS P
     ON C.NIFCliente=P.NIF;
 
--- Get Doctors list
+-- Get Doctors list (checked)
 GO
 CREATE PROCEDURE [SeguradoraSaude].GetDoctorList
 AS
@@ -75,7 +75,7 @@ AS
     JOIN [SeguradoraSaude].Pessoa AS P
     ON M.NIFMedico=P.NIF;
 
--- Get Secretary list
+-- Get Secretary list (checked)
 GO
 CREATE PROCEDURE [SeguradoraSaude].GetSecretaryList
 AS
@@ -84,7 +84,7 @@ AS
     JOIN [SeguradoraSaude].Pessoa AS P
     ON S.NIFSecretaria=P.NIF;
 
--- Get clinics list (name and number)
+-- Get clinics list (name and number) (checked)
 GO
 CREATE PROCEDURE [SeguradoraSaude].GetClinicList
 AS
@@ -92,7 +92,7 @@ AS
     SELECT NomeClinica, NumClinica
     FROM [SeguradoraSaude].ClinicaHospitalar;
 
--- Get appointments list
+-- Get appointments list (checked)
 GO
 CREATE PROCEDURE [SeguradoraSaude].GetAppointmentList
 AS
@@ -100,7 +100,7 @@ AS
     SELECT NumConsulta, dataConsulta, hora
     FROM [SeguradoraSaude].Consulta;
 
--- Get insurences list
+-- Get insurences list (checked)
 GO
 CREATE PROCEDURE [SeguradoraSaude].GetInsurenceList
 AS
@@ -108,7 +108,7 @@ AS
     SELECT ID, Tipo, Cota, Carencia, DataSeguro
     FROM [SeguradoraSaude].Seguro
 
--- Get files list
+-- Get files list (checked)
 GO
 CREATE PROCEDURE [SeguradoraSaude].GetFileList
 AS
@@ -116,7 +116,7 @@ AS
     SELECT NumFicha, RelatorioDiagnostico, ConsultaInternamento, NumConsulta, NIFCliente, RefPagamento
     FROM [SeguradoraSaude].Ficha
 
--- Get payments list
+-- Get payments list (checked)
 GO
 CREATE PROCEDURE [SeguradoraSaude].GetPaymentList
 AS
@@ -127,11 +127,11 @@ AS
 -----------------------------DATABASE INFO----------------------------
 ----------------------------------------------------------------------
 
--- Get appointment info by ID
+-- Get appointment info by ID (checked)
 GO
 CREATE PROCEDURE [SeguradoraSaude].GetAppointmentInfoID (@appointmentID INT)
 AS
-    SELECT dataConsulta, hora, C.Nome, M.Nome, CH.NomeClinica
+    SELECT dataConsulta, hora, P1.Nome, P2.Nome, CH.NomeClinica
     FROM [SeguradoraSaude].Consulta AS CST
     JOIN [SeguradoraSaude].Cliente AS C
     ON CST.NIFCliente=C.NIFCliente
@@ -139,15 +139,17 @@ AS
     ON CST.NIFMedico=M.NIFMedico
     JOIN [SeguradoraSaude].ClinicaHospitalar AS CH
     ON CST.NumClinica=CH.NumClinica
-    JOIN [SeguradoraSaude].Pessoa AS P
-    ON CST.NIFMedico=P.NIF AND CST.NIFCliente=P.NIF -- check
+    JOIN [SeguradoraSaude].Pessoa AS P1
+    ON CST.NIFMedico=P1.NIF
+    JOIN [SeguradoraSaude].Pessoa AS P2
+    ON  CST.NIFCliente=P2.NIF
     WHERE CST.NumConsulta=@appointmentID;
 
--- Get appointment info by NIF
+-- Get appointment info by NIF (checked)
 GO
 CREATE PROCEDURE [SeguradoraSaude].GetAppointmentInfoNIF (@appointmentNIF INT)
 AS
-    SELECT dataConsulta, hora, C.Nome, M.Nome, CH.NomeClinica
+    SELECT dataConsulta, hora, P1.Nome, P2.Nome, CH.NomeClinica
     FROM [SeguradoraSaude].Consulta AS CST
     JOIN [SeguradoraSaude].Cliente AS C
     ON CST.NIFCliente=C.NIFCliente
@@ -155,12 +157,14 @@ AS
     ON CST.NIFMedico=M.NIFMedico
     JOIN [SeguradoraSaude].ClinicaHospitalar AS CH
     ON CST.NumClinica=CH.NumClinica
-    JOIN [SeguradoraSaude].Pessoa AS P
-    ON CST.NIFMedico=P.NIF AND CST.NIFCliente=P.NIF -- check
+    JOIN [SeguradoraSaude].Pessoa AS P1
+    ON CST.NIFMedico=P1.NIF
+    JOIN [SeguradoraSaude].Pessoa AS P2
+    ON  CST.NIFCliente=P2.NIF
     WHERE CST.NIFCliente=@appointmentNIF;
 
 
--- Get disease file info by ID
+-- Get disease file info by ID (checked)
 GO
 CREATE PROCEDURE [SeguradoraSaude].GetDiseaseInfoID (@diseaseID INT)
 AS
@@ -172,7 +176,7 @@ AS
     ON C.NIFCliente=P.NIF
     WHERE FD.ID=@diseaseID;
 
--- Get disease file info client by NIF
+-- Get disease file info client by NIF (checked)
 GO
 CREATE PROCEDURE [SeguradoraSaude].GetDiseaseInfoNIF (@diseaseNIF INT)
 AS
@@ -184,7 +188,7 @@ AS
     ON C.NIFCliente=P.NIF
     WHERE FD.NIFCliente=@diseaseNIF;
 
--- Get insurance info by ID
+-- Get insurance info by ID (checked)
 GO
 CREATE PROCEDURE [SeguradoraSaude].GetInsurenceInfoID (@insurenceID INT)
 AS
@@ -198,7 +202,7 @@ AS
     ON C.NIFCliente=P.NIF
     WHERE S.ID=@insurenceID;
 
--- Get insurance info by NIF
+-- Get insurance info by NIF (checked)
 GO
 CREATE PROCEDURE [SeguradoraSaude].GetInsurenceInfoNIF (@insurenceNIF INT)
 AS
@@ -212,7 +216,7 @@ AS
     ON C.NIFCliente=P.NIF
     WHERE TS.NIFCliente=@insurenceNIF;
 
--- Get payment info by NIF
+-- Get payment info by NIF (checked)
 GO
 CREATE PROCEDURE [SeguradoraSaude].GetPaymentInfoNIF (@paymentNIF INT)
 AS
@@ -224,9 +228,9 @@ AS
     ON F.NIFCliente=C.NIFCliente
     WHERE F.NIFCliente=@paymentNIF;
 
--- Get secretary that processed the payment by NIF
+-- Get secretary that processed the payment by NIF (checked)
 GO
-CREATE PROCEDURE [SeguradoraSaude].GetPaymentInfoNIF (@paymentSecretaryNIF INT)
+CREATE PROCEDURE [SeguradoraSaude].GetPaymentInfoSec (@paymentSecretaryNIF INT)
 AS
     SELECT PS.Nome, S.NumFuncionaria, P.DataPagamento
     FROM [SeguradoraSaude].Pagamento AS P
@@ -236,7 +240,7 @@ AS
     ON S.NIFSecretaria=PS.NIF
     WHERE P.NIFSecretaria=@paymentSecretaryNIF;
 
--- Get clinic where a doctor works using NumFunc
+-- Get clinic where a doctor works using NumFunc (checked)
 GO
 CREATE PROCEDURE [SeguradoraSaude].GetDoctorClinicNF (@clinicDoctorNum INT)
 AS
@@ -246,7 +250,7 @@ AS
     ON CH.NumClinica=M.NumClinica
     WHERE M.NumMedico=@clinicDoctorNum;
 
--- Get a clinic name when its given it's number
+-- Get a clinic name when its given it's number (checked)
 GO
 CREATE PROCEDURE [SeguradoraSaude].GetClinic (@clinicNum INT)
 AS
@@ -254,25 +258,25 @@ AS
     FROM [SeguradoraSaude].ClinicaHospitalar AS CH
     WHERE CH.NumClinica=@clinicNum;
 
--- Get a client number when given its NIF
+-- Get a client number when given its NIF (checked)
 GO
-CREATE PROCEDURE [SeguradoraSaude].GetClinic (@clientNIF INT)
+CREATE PROCEDURE [SeguradoraSaude].GetClinicNIF (@clientNIF INT)
 AS
     SELECT C.NumCliente
     FROM [SeguradoraSaude].Cliente AS C
     WHERE C.NIFCliente=@clientNIF;
 
--- Get a doctor number when given its NIF
+-- Get a doctor number when given its NIF (checked)
 GO
-CREATE PROCEDURE [SeguradoraSaude].GetDoctor (@doctorNIF INT)
+CREATE PROCEDURE [SeguradoraSaude].GetDoctorNIF (@doctorNIF INT)
 AS
     SELECT M.NumMedico
     FROM [SeguradoraSaude].Medico AS M
     WHERE M.NIFMedico=@doctorNIF;
 
--- Get a secretary number when given its NIF
+-- Get a secretary number when given its NIF (checked)
 GO
-CREATE PROCEDURE [SeguradoraSaude].GetSecretary (@secretaryNIF INT)
+CREATE PROCEDURE [SeguradoraSaude].GetSecretaryNIF (@secretaryNIF INT)
 AS
     SELECT S.NumFuncionaria
     FROM [SeguradoraSaude].Secretaria AS S
@@ -283,27 +287,25 @@ AS
 --------------------------------CREATE--------------------------------
 ----------------------------------------------------------------------
 
--- Create a new client
+-- Create a new client (checked)
 GO
 CREATE PROCEDURE [SeguradoraSaude].NewClient 
-    @clientNIF INT, 
-    @clientNumber INT, 
+    @clientNIF INT,
     @name VARCHAR(30), 
     @address VARCHAR(30), 
     @yearsOld INT, 
     @sex CHAR(1)
 AS
 BEGIN
-    -- how to insert a serial number by default for NumClient?
+    -- how to insert a serial number by default for NumClient? [SOLVED]
     INSERT INTO [SeguradoraSaude].Pessoa VALUES (@name, @clientNIF, @address, @yearsOld, @sex);
-    INSERT INTO [SeguradoraSaude].Cliente VALUES(@clientNIF, @clientNumber);
+    INSERT INTO [SeguradoraSaude].Cliente VALUES(@clientNIF);
 END
 
--- Create new doctor
+-- Create new doctor (doctor) (checked)
 GO
 CREATE PROCEDURE [SeguradoraSaude].NewDoctor
-    @doctorNIF INT, 
-    @doctorNumber INT, 
+    @doctorNIF INT,
     @salary VARCHAR(15), 
     @specialization VARCHAR(30), 
     @clinicNumber INT, 
@@ -320,15 +322,14 @@ BEGIN
         SET @salary = 700
     END
     INSERT INTO [SeguradoraSaude].Pessoa VALUES (@name, @doctorNIF, @address, @yearsOld, @sex);
-    INSERT INTO [SeguradoraSaude].Medico VALUES(@doctorNIF, @doctorNumber, CAST(@salary AS INT), @specialization, @clinicNumber);
+    INSERT INTO [SeguradoraSaude].Medico VALUES(@doctorNIF, CAST(@salary AS INT), @specialization, @clinicNumber);
     INSERT INTO [SeguradoraSaude].ClinicaHospitalar VALUES(@clinicNumber, @clinicName, @clinicLocalization);
 END
 
--- Create new secretary
+-- Create new secretary (checked)
 GO
 CREATE PROCEDURE [SeguradoraSaude].NewSecretary
-    @secretaryNIF INT, 
-    @secretaryNumber INT, 
+    @secretaryNIF INT,
     @salary VARCHAR(15), 
     @name VARCHAR(30), 
     @address VARCHAR(30), 
@@ -341,16 +342,14 @@ BEGIN
         SET @salary = 700
     END
     INSERT INTO [SeguradoraSaude].Pessoa VALUES (@name, @secretaryNIF, @address, @yearsOld, @sex);
-    INSERT INTO [SeguradoraSaude].Secretaria VALUES(@secretaryNIF, @secretaryNumber, CAST(@salary AS INT));
+    INSERT INTO [SeguradoraSaude].Secretaria VALUES(@secretaryNIF, CAST(@salary AS INT));
 END
 
--- Create new appointment
+-- Create new appointment (checked)
 GO
 CREATE PROCEDURE [SeguradoraSaude].NewAppointment
     @doctorNIF INT,
-    @clientNIF INT, 
-    @doctorNumber INT, 
-    @clientNumber INT,
+    @clientNIF INT,
     @salary VARCHAR(15), 
     @specialization VARCHAR(30), 
     @clinicNumber INT, 
@@ -372,16 +371,15 @@ BEGIN
     END
     INSERT INTO [SeguradoraSaude].Pessoa VALUES (@nameClient, @clientNIF, @addressClient, @yearsOldClient, @sexClient);
     INSERT INTO [SeguradoraSaude].Pessoa VALUES (@nameDoctor, @doctorNIF, @addressDoctor, @yearsOldDoctor, @sexDoctor);
-    INSERT INTO [SeguradoraSaude].Cliente VALUES(@clientNIF, @clientNumber);
+    INSERT INTO [SeguradoraSaude].Cliente VALUES(@clientNIF);
     INSERT INTO [SeguradoraSaude].ClinicaHospitalar VALUES(@clinicNumber, @clinicName, @clinicLocalization);
-    INSERT INTO [SeguradoraSaude].Medico VALUES(@doctorNIF, @doctorNumber, CAST(@salary AS INT), @specialization, @clinicNumber);
+    INSERT INTO [SeguradoraSaude].Medico VALUES(@doctorNIF, CAST(@salary AS INT), @specialization, @clinicNumber);
 END
 
--- Create new insurance
+-- Create new insurance (checked)
 GO
 CREATE PROCEDURE [SeguradoraSaude].NewInsurance
-    @clientNIF INT, 
-    @clientNumber INT,
+    @clientNIF INT,
     @name VARCHAR(30), 
     @address VARCHAR(30),
     @yearsOld INT,
@@ -394,13 +392,12 @@ CREATE PROCEDURE [SeguradoraSaude].NewInsurance
 AS
 BEGIN
     INSERT INTO [SeguradoraSaude].Pessoa VALUES (@name, @clientNIF, @address, @yearsOld, @sex);
-    INSERT INTO [SeguradoraSaude].Cliente VALUES(@clientNIF, @clientNumber);
+    INSERT INTO [SeguradoraSaude].Cliente VALUES(@clientNIF);
     INSERT INTO [SeguradoraSaude].Seguro VALUES(@idInsurance, @type, @fee, @lack, CONVERT(date, @insurenceDate, 105));
     INSERT INTO [SeguradoraSaude].ClienteTemSeguro VALUES(@clientNIF, @idInsurance);
 END
 
-
--- Create new diseases file    -- [ NEED TO TEST ]
+-- Create new diseases file    -- [ NEED TO FIX SOME ERRORS ]
 GO
 CREATE PROCEDURE [SeguradoraSaude].NewDiseasesFile
     @clientNIF INT, 
@@ -411,7 +408,7 @@ CREATE PROCEDURE [SeguradoraSaude].NewDiseasesFile
     @sex CHAR(1),
     @idDiseaseFile INT,
     @type VARCHAR(30),
-    @state BOOLEAN,
+    @state BIT,
     @dateD CHAR(10),
     @numFile INT,
     @rD CHAR(1),
@@ -500,7 +497,7 @@ END
 --------------------------------UPDATE--------------------------------
 ----------------------------------------------------------------------
 
--- Update user info
+-- Update user info (checked) [ADD IF NOT EXIST]
 GO
 CREATE PROCEDURE [SeguradoraSaude].UpdateUserInfo
     @name           VARCHAR(30),
@@ -508,9 +505,9 @@ CREATE PROCEDURE [SeguradoraSaude].UpdateUserInfo
     @address        VARCHAR(30),
     @yearsOld       INT,
     @sex            CHAR(1),
-    @clientNum      INT,
-    @doctorNum      INT,
-    @secretaryNum   INT,
+    --@clientNum      INT,
+    --@doctorNum      INT,
+    --@secretaryNum   INT,
     @salary         VARCHAR(15),
     @specialization VARCHAR(30), 
     @clinicNumber INT
@@ -526,7 +523,8 @@ AS
             Sexo = @sex
         WHERE NIF=@userNIF;
     END
-    IF EXISTS(SELECT * FROM [SeguradoraSaude].Cliente WHERE NIFCliente=@userNIF)
+    /*
+	IF EXISTS(SELECT * FROM [SeguradoraSaude].Cliente WHERE NIFCliente=@userNIF)
     BEGIN
          
         UPDATE [SeguradoraSaude].Cliente
@@ -534,11 +532,12 @@ AS
             NumCliente = @clientNum
         WHERE NIFCliente=@userNIF;
     END
+	*/
     IF EXISTS(SELECT * FROM [SeguradoraSaude].Medico WHERE NIFMedico=@userNIF)
     BEGIN
         UPDATE [SeguradoraSaude].Medico
         SET
-            NumMedico = @doctorNum,
+            --NumMedico = @doctorNum,
             Ordenado = CAST(@salary AS INT),
             Especializacao = @specialization,
             NumClinica = @clinicNumber
@@ -548,12 +547,12 @@ AS
     BEGIN
         UPDATE [SeguradoraSaude].Secretaria
         SET 
-            NumFuncionaria = @secretaryNum,
+            --NumFuncionaria = @secretaryNum,
             Ordenado = CAST(@salary AS INT)
         WHERE NIFSecretaria=@userNIF;
     END
 
--- Update payment info
+-- Update payment info (checked)
 GO
 CREATE PROCEDURE [SeguradoraSaude].UpdatePaymentInfo
     @refPay         INT,
@@ -580,13 +579,13 @@ AS
         VALUES(@refPay, @methodPay, @code, @value, @datePay, @secretaryNIF);
     END
 
--- Update Disease file info
+-- Update Disease file info (checked)
 GO
 CREATE PROCEDURE [SeguradoraSaude].UpdateDiseaseInfo
     @idFile         INT,
     @clientNIF      INT,
     @type           VARCHAR(30),
-    @state          BOOLEAN,
+    @state          BIT,
     @dateD          VARCHAR(10),
     @fileNum        INT
 AS
@@ -608,7 +607,7 @@ AS
 --------------------------------DELETE--------------------------------
 ----------------------------------------------------------------------
 
--- Delete client procedure  [Probably some errors: Need to search for dependencies
+-- Delete client procedure (checked)
 GO
 CREATE PROCEDURE [SeguradoraSaude].DeleteUser @userNIF INT
 AS
@@ -626,7 +625,7 @@ AS
         WHERE NIF=@userNIF;
     END
 
--- Delete payment
+-- Delete payment (checked)
 GO
 CREATE PROCEDURE [SeguradoraSaude].DeletePayment @PayRef INT
 AS
@@ -636,7 +635,7 @@ AS
         WHERE RefPagamento=@PayRef;
     END
 
--- Delete Insurence
+-- Delete Insurence (checked)
 GO
 CREATE PROCEDURE [SeguradoraSaude].DeleteInsurence @InsID INT
 AS
@@ -646,7 +645,7 @@ AS
         WHERE ID=@InsID;
     END
 
--- Delete Clinic [?]
+-- Delete Clinic (checked)
 GO
 CREATE PROCEDURE [SeguradoraSaude].DeleteClinic @ClinicNum INT
 AS

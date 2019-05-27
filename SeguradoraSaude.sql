@@ -15,7 +15,7 @@ GO
 CREATE TABLE SeguradoraSaude.Cliente
 (
     NIFCliente  INT NOT NULL UNIQUE CHECK (NIFCliente >= 000000000 AND NIFCliente <= 999999999),
-    NumCliente  INT NOT NULL CHECK (NumCliente > 0),
+    NumCliente  INT IDENTITY(1,1),
     PRIMARY KEY (NIFCliente),
     FOREIGN KEY (NIFCliente) REFERENCES SeguradoraSaude.Pessoa(NIF) ON DELETE CASCADE
 )
@@ -34,7 +34,7 @@ GO
 CREATE TABLE SeguradoraSaude.Medico
 (
     NIFMedico       INT NOT NULL UNIQUE CHECK (NIFMedico >= 000000000 AND NIFMedico <= 999999999),
-    NumMedico       INT NOT NULL CHECK (NumMedico > 0),
+    NumMedico       INT IDENTITY(1,1),
     Ordenado        INT CHECK (Ordenado > 600),     -- ordenado minimo
     Especializacao  VARCHAR(30) NOT NULL,
     NumClinica      INT NOT NULL UNIQUE,
@@ -47,7 +47,7 @@ GO
 CREATE TABLE SeguradoraSaude.Secretaria
 (
     NIFSecretaria   INT NOT NULL UNIQUE CHECK (NIFSecretaria >= 000000000 AND NIFSecretaria <= 999999999),
-    NumFuncionaria  INT NOT NULL CHECK (NumFuncionaria > 0),
+    NumFuncionaria  INT IDENTITY(1,1),
     Ordenado INT CHECK (Ordenado > 600),        -- ordenado minimo
     PRIMARY KEY (NIFSecretaria),
     FOREIGN KEY (NIFSecretaria) REFERENCES SeguradoraSaude.Pessoa(NIF) ON DELETE CASCADE
