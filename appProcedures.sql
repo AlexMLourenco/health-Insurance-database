@@ -15,7 +15,6 @@ BEGIN
     INSERT INTO [SeguradoraSaude].Pessoa VALUES (@name, @clientNIF, @address, @yearsOld, @sex);
     INSERT INTO [SeguradoraSaude].Cliente VALUES(@clientNIF);
 END
-
 -- Create new doctor (doctor) (checked)
 GO
 CREATE PROCEDURE [SeguradoraSaude].NewDoctor
@@ -39,7 +38,6 @@ BEGIN
     INSERT INTO [SeguradoraSaude].Medico VALUES(@doctorNIF, CAST(@salary AS INT), @specialization, @clinicNumber);
     INSERT INTO [SeguradoraSaude].ClinicaHospitalar VALUES(@clinicName, @clinicLocalization);
 END
-
 -- Create new secretary (checked)
 GO
 CREATE PROCEDURE [SeguradoraSaude].NewSecretary
@@ -58,7 +56,6 @@ BEGIN
     INSERT INTO [SeguradoraSaude].Pessoa VALUES (@name, @secretaryNIF, @address, @yearsOld, @sex);
     INSERT INTO [SeguradoraSaude].Secretaria VALUES(@secretaryNIF, CAST(@salary AS INT));
 END
-
 -- Create new appointment (checked)
 GO
 CREATE PROCEDURE [SeguradoraSaude].NewAppointment
@@ -89,7 +86,6 @@ BEGIN
     INSERT INTO [SeguradoraSaude].ClinicaHospitalar VALUES(@clinicName, @clinicLocalization);
     INSERT INTO [SeguradoraSaude].Medico VALUES(@doctorNIF, CAST(@salary AS INT), @specialization, @clinicNumber);
 END
-
 -- Create new insurance (checked)
 GO
 CREATE PROCEDURE [SeguradoraSaude].NewInsurance
@@ -110,7 +106,6 @@ BEGIN
     INSERT INTO [SeguradoraSaude].Seguro VALUES(@idInsurance, @type, @fee, @lack, CONVERT(date, @insurenceDate, 105));
     INSERT INTO [SeguradoraSaude].ClienteTemSeguro VALUES(@clientNIF, @idInsurance);
 END
-
 -- Create new diseases file (checked)
 GO
 CREATE PROCEDURE SeguradoraSaude.NewDiseasesFile
@@ -210,7 +205,6 @@ BEGIN
     INSERT INTO SeguradoraSaude.FichaDoencas VALUES(@idDiseaseFile, @clientNIF, @type, @state, @dateD, @numFile);
 
 END
-
 -- Create Clinic
 GO
 CREATE PROCEDURE [SeguradoraSaude].NewClinic
@@ -221,7 +215,6 @@ BEGIN
     INSERT INTO [SeguradoraSaude].ClinicaHospitalar ([NomeClinica], [Localizacao])
     VALUES (@clinicName, @localization);
 END
-
 -- Create File
 GO
 CREATE PROCEDURE [SeguradoraSaude].NewFile
@@ -294,7 +287,6 @@ BEGIN
     INSERT INTO [SeguradoraSaude].ClinicaHospitalar ([NomeClinica], [Localizacao])
     VALUES (@clinicName, @clinicLocalization);
 END
-
 -- Create Payment
 GO
 CREATE PROCEDURE SeguradoraSaude.NewPayment
@@ -325,7 +317,6 @@ BEGIN
     INSERT INTO SeguradoraSaude.Pagamento ([RefPagamento], [MetodoPagamento], [Codigo], [Valor], [DataPagamento], [NIFSecretaria])
     VALUES(@refPay, @metPay, @codPay, @amountPay, @datePay, @secretaryNIF);
 END
-
 --------------------------------UPDATE--------------------------------
 ----------------------------------------------------------------------
 
@@ -377,6 +368,12 @@ AS
             Ordenado = CAST(@salary AS INT)
         WHERE NIFSecretaria=@userNIF;
     END
+
+    IF NOT EXISTS(SELECT * FROM [SeguradoraSaude].Pessoa WHERE NIF=@userNIF)
+    BEGIN
+		PRINT 'There is no user with that nif in the database'
+		ROLLBACK TRAN
+	END
 
 -- Update Clinic
 GO
