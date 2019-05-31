@@ -37,7 +37,7 @@ CREATE TABLE SeguradoraSaude.Medico
     NumMedico       INT IDENTITY(1,1),
     Ordenado        INT CHECK (Ordenado > 600),     -- ordenado minimo
     Especializacao  VARCHAR(30) NOT NULL,
-    NumClinica      INT NOT NULL UNIQUE,
+    NumClinica      INT NOT NULL,
     PRIMARY KEY (NIFMedico),
     FOREIGN KEY (NIFMedico) REFERENCES SeguradoraSaude.Pessoa(NIF) ON DELETE CASCADE,
     FOREIGN KEY(NumClinica) REFERENCES SeguradoraSaude.ClinicaHospitalar(NumClinica) ON DELETE CASCADE

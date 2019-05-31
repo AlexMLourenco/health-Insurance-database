@@ -54,14 +54,14 @@ GO
 CREATE PROCEDURE [SeguradoraSaude].GetUserList
 AS
     SET NOCOUNT ON;
-    SELECT Nome 
+    SELECT Nome, NIF
     FROM [SeguradoraSaude].Pessoa
 
 -- Get clients list (checked)
 GO
 CREATE PROCEDURE [SeguradoraSaude].GetClientList
 AS
-    SELECT Nome
+    SELECT Nome, NIF
     FROM [SeguradoraSaude].Cliente AS C
     JOIN [SeguradoraSaude].Pessoa AS P
     ON C.NIFCliente=P.NIF;
@@ -70,7 +70,7 @@ AS
 GO
 CREATE PROCEDURE [SeguradoraSaude].GetDoctorList
 AS
-    SELECT Nome
+    SELECT Nome, NIF
     FROM [SeguradoraSaude].Medico AS M
     JOIN [SeguradoraSaude].Pessoa AS P
     ON M.NIFMedico=P.NIF;
@@ -79,7 +79,7 @@ AS
 GO
 CREATE PROCEDURE [SeguradoraSaude].GetSecretaryList
 AS
-    SELECT Nome
+    SELECT Nome, NIF
     FROM [SeguradoraSaude].Secretaria AS S
     JOIN [SeguradoraSaude].Pessoa AS P
     ON S.NIFSecretaria=P.NIF;
@@ -399,7 +399,7 @@ END
 
 -- Create new diseases file    -- [ NEED TO FIX SOME ERRORS ]
 GO
-CREATE PROCEDURE [SeguradoraSaude].NewDiseasesFile
+CREATE PROCEDURE SeguradoraSaude.NewDiseasesFile
     @clientNIF INT, 
     @clientNumber INT,
     @name VARCHAR(30), 
@@ -440,57 +440,58 @@ CREATE PROCEDURE [SeguradoraSaude].NewDiseasesFile
     @sexSecretary CHAR(1)
 AS
 BEGIN
-    IF NOT EXISTS(SELECT * FROM [SeguradoraSaude].Cliente WHERE NIFCliente=@clientNIF)
+    IF NOT EXISTS(SELECT * FROM SeguradoraSaude.Cliente WHERE NIFCliente=@clientNIF)
     BEGIN
-        INSERT INTO [SeguradoraSaude].Cliente VALUES(@clientNIF, @clientNumber);
+        INSERT INTO SeguradoraSaude.Cliente ([NIFCliente]) VALUES(@clientNIF);
     END
 
-    IF NOT EXISTS(SELECT * FROM [SeguradoraSaude].Ficha WHERE NumFicha=@numFile)
+    IF NOT EXISTS(SELECT * FROM SeguradoraSaude.Ficha WHERE NumFicha=@numFile)
     BEGIN
-        INSERT INTO [SeguradoraSaude].Ficha VALUES(@numFile, @rD, @cI, @numAppoint, @clientNIF, @refPay);
+        INSERT INTO SeguradoraSaude.Ficha VALUES(@numFile, @rD, @cI, @numAppoint, @clientNIF, @refPay);
     END
     
-    IF NOT EXISTS(SELECT * FROM [SeguradoraSaude].Pessoa WHERE NIF=@clientNIF)
+    IF NOT EXISTS(SELECT * FROM SeguradoraSaude.Pessoa WHERE NIF=@clientNIF)
     BEGIN
-        INSERT INTO [SeguradoraSaude].Pessoa VALUES(@name, @clientNIF, @address, @yearsOld, @sex);
+        INSERT INTO SeguradoraSaude.Pessoa VALUES(@name, @clientNIF, @address, @yearsOld, @sex);
     END
 
-    IF NOT EXISTS(SELECT * FROM [SeguradoraSaude].Consulta WHERE NumConsulta=@numAppoint)
+    IF NOT EXISTS(SELECT * FROM SeguradoraSaude.Consulta WHERE NumConsulta=@numAppoint)
     BEGIN
-        INSERT INTO [SeguradoraSaude].Consulta VALUES(@numAppoint, CONVERT(date, @dateAppoint, 105), CAST(@hourAppoint AS TIME), @clientNIF, @doctorNIF, @clinicNum);
+        INSERT INTO SeguradoraSaude.Consulta VALUES(@numAppoint, CONVERT(date, @dateAppoint, 105), CAST(@hourAppoint AS TIME), @clientNIF, @doctorNIF, @clinicNum);
     END
 
-    IF NOT EXISTS(SELECT * FROM [SeguradoraSaude].Pagamento WHERE RefPagamento=@refPay)
+    IF NOT EXISTS(SELECT * FROM SeguradoraSaude.Pagamento WHERE RefPagamento=@refPay)
     BEGIN -- pagamento
-        INSERT INTO [SeguradoraSaude].Pagamento VALUES(@refPay, @metPay, @codPay, @amountPay, @datePay, @secretaryNIF);
+        INSERT INTO SeguradoraSaude.Pagamento VALUES(@refPay, @metPay, @codPay, @amountPay, @datePay, @secretaryNIF);
     END
 
-    IF NOT EXISTS(SELECT * FROM [SeguradoraSaude].Secretaria WHERE NIFSecretaria=@secretaryNIF)
+    IF NOT EXISTS(SELECT * FROM SeguradoraSaude.Secretaria WHERE NIFSecretaria=@secretaryNIF)
     BEGIN -- pagamento:secretaria
-        INSERT INTO [SeguradoraSaude].Secretaria VALUES(@secretaryNIF, @secretaryNum);
+        INSERT INTO SeguradoraSaude.Secretaria VALUES(@secretaryNIF, @secretaryNum);
     END
 
-    IF NOT EXISTS(SELECT * FROM [SeguradoraSaude].Pessoa WHERE NIF=@secretaryNIF)
+    IF NOT EXISTS(SELECT * FROM SeguradoraSaude.Pessoa WHERE NIF=@secretaryNIF)
     BEGIN -- pagamento:secretaria:pessoa
-        INSERT INTO [SeguradoraSaude].Pessoa VALUES(@nameSecretary, @secretaryNIF, @addressSecretary, @yearsOldSecretary, @sexSecretary);
+        INSERT INTO SeguradoraSaude.Pessoa VALUES(@nameSecretary, @secretaryNIF, @addressSecretary, @yearsOldSecretary, @sexSecretary);
     END
 
-    IF NOT EXISTS(SELECT * FROM [SeguradoraSaude].Medico WHERE NIFMedico=@doctorNIF)
+    IF NOT EXISTS(SELECT * FROM SeguradoraSaude.Medico WHERE NIFMedico=@doctorNIF)
     BEGIN -- consulta:medico
-        INSERT INTO [SeguradoraSaude].Medico VALUES(@doctorNIF, @doctorNum, @salary, @specialization, @clinicNum);
+        INSERT INTO SeguradoraSaude.Medico ([NIFMedico], [Ordenado], [Especializacao], [NumClinica]) 
+        VALUES(@doctorNIF, @salary, @specialization, @clinicNum);
     END
 
-    IF NOT EXISTS(SELECT * FROM [SeguradoraSaude].ClinicaHospitalar WHERE NumClinica=@clinicNum)
+    IF NOT EXISTS(SELECT * FROM SeguradoraSaude.ClinicaHospitalar WHERE NumClinica=@clinicNum)
     BEGIN -- consulta:clinica
-        INSERT INTO [SeguradoraSaude].ClinicaHospitalar VALUES(@clinicNum, @clinicName, @clinicLocalization);
+        INSERT INTO SeguradoraSaude.ClinicaHospitalar VALUES(@clinicNum, @clinicName, @clinicLocalization);
     END
 
-    IF NOT EXISTS(SELECT * FROM [SeguradoraSaude].Pessoa WHERE NIF=@doctorNIF)
+    IF NOT EXISTS(SELECT * FROM SeguradoraSaude.Pessoa WHERE NIF=@doctorNIF)
     BEGIN -- consulta:medico:pessoa
-        INSERT INTO [SeguradoraSaude].Pessoa VALUES(@nameDoctor, @doctorNIF, @addressDoctor, @yearsOldDoctor, @sexDoctor);
+        INSERT INTO SeguradoraSaude.Pessoa VALUES(@nameDoctor, @doctorNIF, @addressDoctor, @yearsOldDoctor, @sexDoctor);
     END
 
-    INSERT INTO [SeguradoraSaude].FichaDoencas VALUES(@idDiseaseFile, @clientNIF, @type, @state, @dateD, @numFile);
+    INSERT INTO SeguradoraSaude.FichaDoencas VALUES(@idDiseaseFile, @clientNIF, @type, @state, @dateD, @numFile);
 
 END
 
