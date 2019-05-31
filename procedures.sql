@@ -323,7 +323,7 @@ BEGIN
     END
     INSERT INTO [SeguradoraSaude].Pessoa VALUES (@name, @doctorNIF, @address, @yearsOld, @sex);
     INSERT INTO [SeguradoraSaude].Medico VALUES(@doctorNIF, CAST(@salary AS INT), @specialization, @clinicNumber);
-    INSERT INTO [SeguradoraSaude].ClinicaHospitalar VALUES(@clinicNumber, @clinicName, @clinicLocalization);
+    INSERT INTO [SeguradoraSaude].ClinicaHospitalar VALUES(@clinicName, @clinicLocalization);
 END
 
 -- Create new secretary (checked)
@@ -372,7 +372,7 @@ BEGIN
     INSERT INTO [SeguradoraSaude].Pessoa VALUES (@nameClient, @clientNIF, @addressClient, @yearsOldClient, @sexClient);
     INSERT INTO [SeguradoraSaude].Pessoa VALUES (@nameDoctor, @doctorNIF, @addressDoctor, @yearsOldDoctor, @sexDoctor);
     INSERT INTO [SeguradoraSaude].Cliente VALUES(@clientNIF);
-    INSERT INTO [SeguradoraSaude].ClinicaHospitalar VALUES(@clinicNumber, @clinicName, @clinicLocalization);
+    INSERT INTO [SeguradoraSaude].ClinicaHospitalar VALUES(@clinicName, @clinicLocalization);
     INSERT INTO [SeguradoraSaude].Medico VALUES(@doctorNIF, CAST(@salary AS INT), @specialization, @clinicNumber);
 END
 
@@ -397,7 +397,7 @@ BEGIN
     INSERT INTO [SeguradoraSaude].ClienteTemSeguro VALUES(@clientNIF, @idInsurance);
 END
 
--- Create new diseases file    -- [ NEED TO FIX SOME ERRORS ]
+-- Create new diseases file (checked)
 GO
 CREATE PROCEDURE SeguradoraSaude.NewDiseasesFile
     @clientNIF INT, 
@@ -447,7 +447,7 @@ BEGIN
 
     IF NOT EXISTS(SELECT * FROM SeguradoraSaude.Ficha WHERE NumFicha=@numFile)
     BEGIN
-        INSERT INTO SeguradoraSaude.Ficha VALUES(@numFile, @rD, @cI, @numAppoint, @clientNIF, @refPay);
+        INSERT INTO SeguradoraSaude.Ficha VALUES(@rD, @cI, @numAppoint, @clientNIF, @refPay);
     END
     
     IF NOT EXISTS(SELECT * FROM SeguradoraSaude.Pessoa WHERE NIF=@clientNIF)
@@ -477,13 +477,13 @@ BEGIN
 
     IF NOT EXISTS(SELECT * FROM SeguradoraSaude.Medico WHERE NIFMedico=@doctorNIF)
     BEGIN -- consulta:medico
-        INSERT INTO SeguradoraSaude.Medico ([NIFMedico], [Ordenado], [Especializacao], [NumClinica]) 
-        VALUES(@doctorNIF, @salary, @specialization, @clinicNum);
+        INSERT INTO SeguradoraSaude.Medico ([NIFMedico], [Ordenado], [Especializacao]) 
+        VALUES(@doctorNIF, @salary, @specialization);
     END
 
     IF NOT EXISTS(SELECT * FROM SeguradoraSaude.ClinicaHospitalar WHERE NumClinica=@clinicNum)
     BEGIN -- consulta:clinica
-        INSERT INTO SeguradoraSaude.ClinicaHospitalar VALUES(@clinicNum, @clinicName, @clinicLocalization);
+        INSERT INTO SeguradoraSaude.ClinicaHospitalar VALUES(@clinicName, @clinicLocalization);
     END
 
     IF NOT EXISTS(SELECT * FROM SeguradoraSaude.Pessoa WHERE NIF=@doctorNIF)

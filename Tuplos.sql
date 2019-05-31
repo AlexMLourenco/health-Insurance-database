@@ -18,11 +18,10 @@ INSERT INTO [dbo].[Cliente]
 GO
 
 INSERT INTO [dbo].[ClinicaHospitalar]
-           ([NumClinica]
-           ,[NomeClinica]
+           ([NomeClinica]
            ,[Localizacao])
      VALUES
-           (200,'Clinica da Boa Saude','Porto')
+           ('Clinica da Boa Saude','Porto')
 GO
 
 INSERT INTO [dbo].[Medico]
@@ -31,7 +30,7 @@ INSERT INTO [dbo].[Medico]
            ,[Especializacao]
            ,[NumClinica])
      VALUES
-           ('11922355',2500,'Cardiologia',200)
+           ('11922355',2500,'Cardiologia',1)
 GO
 
 INSERT INTO [dbo].[Secretaria]
@@ -43,14 +42,13 @@ GO
 
 
 INSERT INTO [dbo].[Consulta]
-           ([NumConsulta]
-           ,[dataConsulta]
+           ([dataConsulta]
            ,[hora]
            ,[NIFCliente]
            ,[NIFMedico]
            ,[NumClinica])
      VALUES
-           (101, '2019-05-02','19:00:00','15174922','11922355',200)
+           ('2019-05-02','19:00:00','15174922','11922355',1)
            
            
 GO
@@ -67,14 +65,13 @@ INSERT INTO [dbo].[Pagamento]
 GO
 
 INSERT INTO [dbo].[Ficha]
-           ([NumFicha]
-           ,[RelatorioDiagnostico]
+           ([RelatorioDiagnostico]
            ,[ConsultaInternamento]
            ,[NumConsulta]
            ,[NIFCliente]
            ,[RefPagamento])
      VALUES
-           ('1000','R','C','101','15174922','505243456')
+           ('R','C','1','15174922','505243456')
 GO
 
 INSERT INTO [dbo].[FichaDoencas]
@@ -85,7 +82,7 @@ INSERT INTO [dbo].[FichaDoencas]
            ,[DataDiagnostico]
            ,[NumFicha])
      VALUES
-           ('1','15174922','Mononucleose','1','2018-06-6',1000)
+           ('1','15174922','Mononucleose','1','2018-06-6',1)
 GO
 
 INSERT INTO [dbo].[Seguro]

@@ -24,7 +24,7 @@ CREATE TABLE SeguradoraSaude.Cliente
 GO
 CREATE TABLE SeguradoraSaude.ClinicaHospitalar
 (
-    NumClinica      INT NOT NULL UNIQUE CHECK (NumClinica > 0),
+    NumClinica      INT IDENTITY(1,1),
     NomeClinica     NVARCHAR(50) NOT NULL,
     Localizacao     VARCHAR(50),
     PRIMARY KEY (NumClinica)
@@ -56,7 +56,7 @@ CREATE TABLE SeguradoraSaude.Secretaria
 GO
 CREATE TABLE SeguradoraSaude.Consulta
 (
-    NumConsulta     INT NOT NULL UNIQUE CHECK (NumConsulta > 0),
+    NumConsulta     INT IDENTITY(1,1),
     dataConsulta    DATE NOT NULL,
     hora            TIME NOT NULL,
     NIFCliente      INT NOT NULL UNIQUE CHECK (NIFCliente >= 000000000 AND NIFCliente <= 999999999),
@@ -84,7 +84,7 @@ CREATE TABLE SeguradoraSaude.Pagamento
 GO
 CREATE TABLE SeguradoraSaude.Ficha
 (
-    NumFicha                INT NOT NULL UNIQUE CHECK (NumFicha > 0),
+    NumFicha                INT IDENTITY(1,1), --INT NOT NULL UNIQUE CHECK (NumFicha > 0),
     RelatorioDiagnostico    CHAR(1) NOT NULL,
     ConsultaInternamento    CHAR(1) NOT NULL,
     NumConsulta             INT NOT NULL UNIQUE CHECK (NumConsulta > 0),
