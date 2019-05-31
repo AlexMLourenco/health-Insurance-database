@@ -337,9 +337,6 @@ CREATE PROCEDURE [SeguradoraSaude].UpdateUserInfo
     @address        VARCHAR(30),
     @yearsOld       INT,
     @sex            CHAR(1),
-    --@clientNum      INT,
-    --@doctorNum      INT,
-    --@secretaryNum   INT,
     @salary         VARCHAR(15),
     @specialization VARCHAR(30), 
     @clinicNumber INT
@@ -368,7 +365,6 @@ AS
     BEGIN
         UPDATE [SeguradoraSaude].Medico
         SET
-            --NumMedico = @doctorNum,
             Ordenado = CAST(@salary AS INT),
             Especializacao = @specialization,
             NumClinica = @clinicNumber
@@ -378,15 +374,238 @@ AS
     BEGIN
         UPDATE [SeguradoraSaude].Secretaria
         SET 
-            --NumFuncionaria = @secretaryNum,
             Ordenado = CAST(@salary AS INT)
         WHERE NIFSecretaria=@userNIF;
     END
 
 -- Update Clinic
+GO
+CREATE PROCEDURE [SeguradoraSaude].UpdateClinic
+    @nameClinic     VARCHAR(30),
+    @numClinic      INT,
+    @localization   VARCHAR(30)
+AS
+    IF EXISTS(SELECT * FROM [SeguradoraSaude].ClinicaHospitalar WHERE NumClinica=@numClinic)
+    BEGIN
+        UPDATE [SeguradoraSaude].ClinicaHospitalar
+        SET
+            NomeClinica = @nameClinic,
+            Localizacao = @localization
+        WHERE NumClinica=@numClinic;
+    END
+    IF NOT EXISTS(SELECT * FROM [SeguradoraSaude].ClinicaHospitalar WHERE NumClinica=@numClinic)
+    BEGIN
+        INSERT INTO [SeguradoraSaude].ClinicaHospitalar ([NomeClinica], [Localizacao])
+        VALUES(@nameClinic, @localization);
+    END
+
 -- Update Appointment
+GO
+CREATE PROCEDURE [SeguradoraSaude].UpdateAppointment
+    @nameClinic     VARCHAR(30),
+    @numClinic      INT,
+    @localization   VARCHAR(30),
+    @doctorNIF      INT,
+    @nameDoctor     VARCHAR(30),
+    @addressDoctor  VARCHAR(30),
+    @yearsOldDoctor INT,
+    @sexDoctor      CHAR(1),
+    @clientNIF      INT, 
+    @clientNumber   INT,
+    @nameClient     VARCHAR(30), 
+    @addressClient  VARCHAR(30),
+    @yearsOldClient INT,
+    @sexClient      CHAR(1),
+    @salary VARCHAR(15),
+    @specialization VARCHAR(30),
+    @numAppointment INT
+AS
+    IF EXISTS(SELECT * FROM [SeguradoraSaude].Consulta WHERE NumClinica=@numClinic AND NumConsulta=@numAppointment AND NIFCliente=@clientNIF AND NIFMedico=@doctorNIF)
+    BEGIN
+        UPDATE [SeguradoraSaude].ClinicaHospitalar
+        SET
+            NomeClinica = @nameClinic,
+            Localizacao = @localization
+        WHERE NumClinica=@numClinic;
+    END
+    
+    IF NOT EXISTS(SELECT * FROM [SeguradoraSaude].Cliente WHERE NIFCliente=@clientNIF)
+    BEGIN -- cliente
+        INSERT INTO [SeguradoraSaude].Cliente ([NIFCliente])
+        VALUES(@clientNIF);
+    END
+    
+    IF NOT EXISTS(SELECT * FROM [SeguradoraSaude].Pessoa WHERE NIF=@clientNIF)
+    BEGIN -- cliente:pessoa
+        INSERT INTO [SeguradoraSaude].Pessoa ([Nome], [NIF], [Morada], [Idade], [Sexo])
+        VALUES(@nameClient, @clientNIF, @addressClient, @yearsOldClient, @sexClient);
+    END
+
+    IF NOT EXISTS(SELECT * FROM [SeguradoraSaude].Medico WHERE NIFMedico=@doctorNIF)
+    BEGIN -- doctor
+        INSERT INTO [SeguradoraSaude].Medico ([NIFMedico], [Ordenado], [Especializacao], [NumClinica])
+        VALUES(@doctorNIF, @salary, @specialization, @numClinic);
+    END
+    
+    IF NOT EXISTS(SELECT * FROM [SeguradoraSaude].Pessoa WHERE NIF=@doctorNIF)
+    BEGIN -- doctor:pessoa
+        INSERT INTO [SeguradoraSaude].Pessoa ([Nome], [NIF], [Morada], [Idade], [Sexo])
+        VALUES(@nameDoctor, @doctorNIF, @addressDoctor, @yearsOldDoctor, @sexDoctor);
+    END
+
+    IF NOT EXISTS(SELECT * FROM [SeguradoraSaude].ClinicaHospitalar WHERE NumClinica=@numClinic)
+    BEGIN -- clinica
+        INSERT INTO [SeguradoraSaude].ClinicaHospitalar ([NomeClinica], [Localizacao])
+        VALUES(@nameClinic, @localization);
+    END
+
 -- Update File
+GO
+CREATE PROCEDURE [SeguradoraSaude].UpdateFile
+    @nameClinic     VARCHAR(30),
+    @numClinic      INT,
+    @localization   VARCHAR(30),
+    @doctorNIF      INT,
+    @nameDoctor     VARCHAR(30),
+    @addressDoctor  VARCHAR(30),
+    @yearsOldDoctor INT,
+    @sexDoctor      CHAR(1),
+    @clientNIF      INT, 
+    @clientNumber   INT,
+    @nameClient     VARCHAR(30), 
+    @addressClient  VARCHAR(30),
+    @yearsOldClient INT,
+    @sexClient      CHAR(1),
+    @salary         VARCHAR(15),
+    @specialization VARCHAR(30),
+    @numAppointment INT,
+    @dateAppoint    CHAR(10),
+    @hourAppoint    VARCHAR(15),
+    @rD             CHAR(1),
+    @cI             CHAR(1),
+    @refPay         INT,
+    @metPay         VARCHAR(20),
+    @codPay         INT,
+    @amountPay      INT,
+    @datePay        CHAR(10),
+    @numFile        INT,
+    @secretaryNIF INT,
+    @secretaryNum INT,
+    @nameSecretary VARCHAR(30),
+    @addressSecretary VARCHAR(30),
+    @yearsOldSecretary INT,
+    @sexSecretary CHAR(1)
+AS
+    IF EXISTS(SELECT * FROM [SeguradoraSaude].Ficha WHERE NumFicha=@numFile AND NumConsulta=@numAppointment AND NIFCliente=@clientNIF AND RefPagamento=@refPay)
+    BEGIN
+        UPDATE [SeguradoraSaude].Ficha
+        SET
+            RelatorioDiagnostico = @rD,
+            ConsultaInternamento = @cI,
+            NumConsulta = @numAppointment,
+            NIFCliente = @clientNIF,
+            RefPagamento = @refPay
+        WHERE NumFicha=@numFile;
+    END
+    
+    IF NOT EXISTS(SELECT * FROM [SeguradoraSaude].Cliente WHERE NIFCliente=@clientNIF)
+    BEGIN -- cliente
+        INSERT INTO [SeguradoraSaude].Cliente ([NIFCliente])
+        VALUES(@clientNIF);
+    END
+    
+    IF NOT EXISTS(SELECT * FROM [SeguradoraSaude].Pessoa WHERE NIF=@clientNIF)
+    BEGIN -- cliente:pessoa
+        INSERT INTO [SeguradoraSaude].Pessoa ([Nome], [NIF], [Morada], [Idade], [Sexo])
+        VALUES(@nameClient, @clientNIF, @addressClient, @yearsOldClient, @sexClient);
+    END
+
+    IF NOT EXISTS(SELECT * FROM [SeguradoraSaude].Medico WHERE NIFMedico=@doctorNIF)
+    BEGIN -- doctor
+        INSERT INTO [SeguradoraSaude].Medico ([NIFMedico], [Ordenado], [Especializacao], [NumClinica])
+        VALUES(@doctorNIF, @salary, @specialization, @numClinic);
+    END
+    
+    IF NOT EXISTS(SELECT * FROM [SeguradoraSaude].Pessoa WHERE NIF=@doctorNIF)
+    BEGIN -- doctor:pessoa
+        INSERT INTO [SeguradoraSaude].Pessoa ([Nome], [NIF], [Morada], [Idade], [Sexo])
+        VALUES(@nameDoctor, @doctorNIF, @addressDoctor, @yearsOldDoctor, @sexDoctor);
+    END
+
+    IF NOT EXISTS(SELECT * FROM [SeguradoraSaude].ClinicaHospitalar WHERE NumClinica=@numClinic)
+    BEGIN -- clinica
+        INSERT INTO [SeguradoraSaude].ClinicaHospitalar ([NomeClinica], [Localizacao])
+        VALUES(@nameClinic, @localization);
+    END
+
+    IF NOT EXISTS(SELECT * FROM [SeguradoraSaude].Consulta WHERE NumConsulta=@numClinic)
+    BEGIN -- consulta
+        INSERT INTO [SeguradoraSaude].Consulta ([dataConsulta], [hora], [NIFCliente], [NIFMedico], [NumClinica])
+        VALUES(CONVERT(date, @dateAppoint, 105), CAST(@hourAppoint AS TIME), @clientNIF, @doctorNIF, @numClinic);
+    END
+
+    IF NOT EXISTS(SELECT * FROM SeguradoraSaude.Pagamento WHERE RefPagamento=@refPay)
+    BEGIN -- pagamento
+        INSERT INTO SeguradoraSaude.Pagamento VALUES(@refPay, @metPay, @codPay, @amountPay, @datePay, @secretaryNIF);
+    END
+
+    IF NOT EXISTS(SELECT * FROM SeguradoraSaude.Secretaria WHERE NIFSecretaria=@secretaryNIF)
+    BEGIN -- pagamento:secretaria
+        INSERT INTO SeguradoraSaude.Secretaria VALUES(@secretaryNIF, @secretaryNum);
+    END
+
+    IF NOT EXISTS(SELECT * FROM SeguradoraSaude.Pessoa WHERE NIF=@secretaryNIF)
+    BEGIN -- pagamento:secretaria:pessoa
+        INSERT INTO SeguradoraSaude.Pessoa VALUES(@nameSecretary, @secretaryNIF, @addressSecretary, @yearsOldSecretary, @sexSecretary);
+    END
+
+
+
 -- Update Insurence
+GO
+CREATE PROCEDURE [SeguradoraSaude].UpdateInsurence
+    @id             INT,
+    @type           VARCHAR(30),
+    @amount         INT,
+    @lack           VARCHAR(30),
+    @dateInsurence  CHAR(10),
+    @clientNIF      VARCHAR(30),
+    @name           VARCHAR(30), 
+    @address        VARCHAR(30),
+    @yearsOld       INT,
+    @sex            CHAR(1)
+AS
+    IF EXISTS(SELECT * FROM [SeguradoraSaude].Seguro WHERE ID=@id)
+    BEGIN
+        UPDATE [SeguradoraSaude].Seguro
+        SET
+            Tipo = @type,
+            Cota = @amount,
+            Carencia = @lack,
+            DataSeguro = CONVERT(date, @dateInsurence, 105)
+        WHERE ID=@id;
+    END
+    IF NOT EXISTS(SELECT * FROM [SeguradoraSaude].Seguro WHERE ID=@id)
+    BEGIN
+        INSERT INTO [SeguradoraSaude].Seguro ([ID], [Tipo], [Cota], [Carencia], [DataSeguro])
+        VALUES(@id, @type, @amount, @lack, @dateInsurence);
+    END
+
+    IF NOT EXISTS(SELECT * FROM [SeguradoraSaude].ClienteTemSeguro WHERE ID=@id AND NIFCliente=@clientNIF)
+    BEGIN
+        INSERT INTO [SeguradoraSaude].ClienteTemSeguro ([NIFCliente], [ID])
+        VALUES(@clientNIF, @id);
+    END
+
+    IF NOT EXISTS(SELECT * FROM SeguradoraSaude.Cliente WHERE NIFCliente=@clientNIF)
+    BEGIN
+        INSERT INTO SeguradoraSaude.Cliente ([NIFCliente]) VALUES(@clientNIF);
+    END
+
+    IF NOT EXISTS(SELECT * FROM SeguradoraSaude.Pessoa WHERE NIF=@clientNIF)
+    BEGIN
+        INSERT INTO SeguradoraSaude.Pessoa VALUES(@name, @clientNIF, @address, @yearsOld, @sex);
+    END
 
 -- Update Disease file info (checked)
 GO
@@ -416,12 +635,111 @@ AS
 --------------------------------DELETE--------------------------------
 ----------------------------------------------------------------------
 
--- Delete Client
--- Delete Doctor
--- Delete Secretary
+-- Delete Client -- Delete Doctor -- Delete Secretary
+GO
+CREATE PROCEDURE [SeguradoraSaude].DeleteUser @userNIF INT
+AS
+    SET NOCOUNT ON;
+    IF EXISTS(SELECT * FROM [SeguradoraSaude].Consulta WHERE NIFCliente=@userNIF OR NIFMedico=@userNIF)
+    BEGIN
+        DELETE FROM [SeguradoraSaude].Consulta
+        WHERE NIFCliente=@userNIF;
+        DELETE FROM [SeguradoraSaude].Consulta
+        WHERE NIFMedico=@userNIF;
+    END
+    
+    IF EXISTS(SELECT * FROM [SeguradoraSaude].Pessoa WHERE NIF=@userNIF)
+    BEGIN
+        DELETE FROM [SeguradoraSaude].Pessoa
+        WHERE NIF=@userNIF;
+    END
+
+    IF EXISTS(SELECT * FROM [SeguradoraSaude].Cliente WHERE NIFCliente=@userNIF)
+    BEGIN
+        DELETE FROM [SeguradoraSaude].Cliente
+        WHERE NIFCliente=@userNIF;
+    END
+    
+    IF EXISTS(SELECT * FROM [SeguradoraSaude].Medico WHERE NIFMedico=@userNIF)
+    BEGIN
+        DELETE FROM [SeguradoraSaude].Medico
+        WHERE NIFMedico=@userNIF;
+    END
+
+    IF EXISTS(SELECT * FROM [SeguradoraSaude].Secretaria WHERE NIFSecretaria=@userNIF)
+    BEGIN
+        DELETE FROM [SeguradoraSaude].Secretaria
+        WHERE NIFSecretaria=@userNIF;
+    END
+
+    IF EXISTS(SELECT * FROM [SeguradoraSaude].Pagamento WHERE NIFSecretaria=@userNIF)
+    BEGIN
+        DELETE FROM [SeguradoraSaude].Pagamento
+        WHERE NIFSecretaria=@userNIF;
+    END
+
+    IF EXISTS(SELECT * FROM [SeguradoraSaude].Ficha WHERE NIFCliente=@userNIF)
+    BEGIN
+        DELETE FROM [SeguradoraSaude].Ficha
+        WHERE NIFCliente=@userNIF;
+    END
+
+    IF EXISTS(SELECT * FROM [SeguradoraSaude].FichaDoencas WHERE NIFCliente=@userNIF)
+    BEGIN
+        DELETE FROM [SeguradoraSaude].FichaDoencas
+        WHERE NIFCliente=@userNIF;
+    END
+
+    IF EXISTS(SELECT * FROM [SeguradoraSaude].ClienteTemSeguro WHERE NIFCliente=@userNIF)
+    BEGIN
+        DELETE FROM [SeguradoraSaude].ClienteTemSeguro
+        WHERE NIFCliente=@userNIF;
+    END
+
 -- Delete Appointment
+GO
+CREATE PROCEDURE [SeguradoraSaude].DeleteAppointment @numAppoint INT
+AS
+    SET NOCOUNT ON;
+    IF EXISTS(SELECT * FROM [SeguradoraSaude].Consulta WHERE NumConsulta=@numAppoint)
+    BEGIN
+        DELETE FROM [SeguradoraSaude].Consulta
+        WHERE NumConsulta=@numAppoint;
+    END
+    
+    IF EXISTS(SELECT * FROM [SeguradoraSaude].Ficha WHERE NumConsulta=@numAppoint)
+    BEGIN
+        DELETE FROM [SeguradoraSaude].Ficha
+        WHERE NumConsulta=@numAppoint;
+    END
+
 -- Delete File
+GO
+CREATE PROCEDURE [SeguradoraSaude].DeleteFile @numFile INT
+AS
+    SET NOCOUNT ON;
+    IF EXISTS(SELECT * FROM [SeguradoraSaude].Ficha WHERE NumFicha=@numFile)
+    BEGIN
+        DELETE FROM [SeguradoraSaude].Ficha
+        WHERE NumFicha=@numFile;
+    END
+    
+    IF EXISTS(SELECT * FROM [SeguradoraSaude].FichaDoencas WHERE NumFicha=@numFile)
+    BEGIN
+        DELETE FROM [SeguradoraSaude].FichaDoencas
+        WHERE NumFicha=@numFile;
+    END
+
 -- Delete Disease
+GO
+CREATE PROCEDURE [SeguradoraSaude].DeleteDisease @idD INT
+AS
+    SET NOCOUNT ON;
+    IF EXISTS(SELECT * FROM [SeguradoraSaude].FichaDoencas WHERE ID=@idD)
+    BEGIN
+        DELETE FROM [SeguradoraSaude].FichaDoencas
+        WHERE ID=@idD;
+    END
 
 -- Delete payment (checked)
 GO
@@ -452,7 +770,6 @@ AS
         DELETE FROM [SeguradoraSaude].ClinicaHospitalar 
         WHERE NumClinica=@ClinicNum;
     END
-
 
 --------------------------------LISTS---------------------------------
 ----------------------------------------------------------------------
