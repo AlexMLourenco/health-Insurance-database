@@ -841,6 +841,14 @@ AS
     SELECT NumFicha, RelatorioDiagnostico, ConsultaInternamento, NumConsulta, NIFCliente, RefPagamento
     FROM [SeguradoraSaude].Ficha
 
+-- Get diseases list (checked)
+GO
+CREATE PROCEDURE [SeguradoraSaude].GetDiseasesList
+AS
+    SET NOCOUNT ON;
+    SELECT ID, NIFCliente, TipoDoenca, Estado, DataDiagnostico, NumFicha
+    FROM [SeguradoraSaude].FichaDoencas
+    
 -- Get payments list (checked)
 GO
 CREATE PROCEDURE [SeguradoraSaude].GetPaymentList
@@ -897,3 +905,37 @@ AS
     SELECT C.dataConsulta, C.hora, C.NIFCliente, C.NIFMedico, C.NumClinica
     FROM [SeguradoraSaude].Consulta AS C
     WHERE C.NumConsulta=@appointNum;
+
+-- Get a file (checked)
+GO
+CREATE PROCEDURE [SeguradoraSaude].GetFileNum (@fileNum INT)
+AS
+    SELECT F.RelatorioDiagnostico, F.ConsultaInternamento, F.NumConsulta, F.NIFCliente, F.RefPagamento
+    FROM [SeguradoraSaude].Ficha AS F
+    WHERE F.NumFicha=@fileNum;
+
+-- Get a diseases file (checked)
+GO
+CREATE PROCEDURE [SeguradoraSaude].GetDiseaseID (@diseaseID INT)
+AS
+    SELECT FD.NIFCliente, FD.TipoDoenca, FD.Estado, FD.DataDiagnostico, FD.NumFicha
+    FROM [SeguradoraSaude].FichaDoencas AS FD
+    WHERE FD.ID=@diseaseID;
+
+-- Get a insurence (checked)
+GO
+CREATE PROCEDURE [SeguradoraSaude].GetInsurenceID (@insurenceID INT)
+AS
+    SELECT S.Tipo, S.Cota, S.Carencia, S.DataSeguro, TS.NIFCliente
+    FROM [SeguradoraSaude].Seguro AS S
+    JOIN [SeguradoraSaude].ClienteTemSeguro AS TS
+    ON S.ID=TS.ID 
+    WHERE S.ID=@insurenceID;
+
+-- Get a payment (checked)
+GO
+CREATE PROCEDURE [SeguradoraSaude].GetPayRef (@payRef INT)
+AS
+    SELECT P.MetodoPagamento, P.Codigo, P.Valor, P.DataPagamento, P.NIFSecretaria
+    FROM [SeguradoraSaude].Pagamento AS P
+    WHERE P.RefPagamento=@payRef;
