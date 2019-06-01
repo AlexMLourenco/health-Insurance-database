@@ -1,0 +1,311 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+App
+</name>
+</assembly>
+<members>
+<member name="T:App.My.Resources.Resources">
+<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member>
+<member name="P:App.My.Resources.Resources.ResourceManager">
+<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member>
+<member name="P:App.My.Resources.Resources.Culture">
+<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSet">
+<summary>
+Represents a strongly typed in-memory cache of data.
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSet.ClienteDataTable">
+<summary>
+Represents the strongly named DataTable class.
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSet.ClienteTemSeguroDataTable">
+<summary>
+Represents the strongly named DataTable class.
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSet.ClinicaHospitalarDataTable">
+<summary>
+Represents the strongly named DataTable class.
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSet.ConsultaDataTable">
+<summary>
+Represents the strongly named DataTable class.
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSet.FichaDataTable">
+<summary>
+Represents the strongly named DataTable class.
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSet.FichaDoencasDataTable">
+<summary>
+Represents the strongly named DataTable class.
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSet.LoginDataTable">
+<summary>
+Represents the strongly named DataTable class.
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSet.MedicoDataTable">
+<summary>
+Represents the strongly named DataTable class.
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSet.PagamentoDataTable">
+<summary>
+Represents the strongly named DataTable class.
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSet.PessoaDataTable">
+<summary>
+Represents the strongly named DataTable class.
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSet.SecretariaDataTable">
+<summary>
+Represents the strongly named DataTable class.
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSet.SeguroDataTable">
+<summary>
+Represents the strongly named DataTable class.
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSet.ClienteRow">
+<summary>
+Represents strongly named DataRow class.
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSet.ClienteTemSeguroRow">
+<summary>
+Represents strongly named DataRow class.
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSet.ClinicaHospitalarRow">
+<summary>
+Represents strongly named DataRow class.
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSet.ConsultaRow">
+<summary>
+Represents strongly named DataRow class.
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSet.FichaRow">
+<summary>
+Represents strongly named DataRow class.
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSet.FichaDoencasRow">
+<summary>
+Represents strongly named DataRow class.
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSet.LoginRow">
+<summary>
+Represents strongly named DataRow class.
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSet.MedicoRow">
+<summary>
+Represents strongly named DataRow class.
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSet.PagamentoRow">
+<summary>
+Represents strongly named DataRow class.
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSet.PessoaRow">
+<summary>
+Represents strongly named DataRow class.
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSet.SecretariaRow">
+<summary>
+Represents strongly named DataRow class.
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSet.SeguroRow">
+<summary>
+Represents strongly named DataRow class.
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSet.ClienteRowChangeEvent">
+<summary>
+Row event argument class
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSet.ClienteTemSeguroRowChangeEvent">
+<summary>
+Row event argument class
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSet.ClinicaHospitalarRowChangeEvent">
+<summary>
+Row event argument class
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSet.ConsultaRowChangeEvent">
+<summary>
+Row event argument class
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSet.FichaRowChangeEvent">
+<summary>
+Row event argument class
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSet.FichaDoencasRowChangeEvent">
+<summary>
+Row event argument class
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSet.LoginRowChangeEvent">
+<summary>
+Row event argument class
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSet.MedicoRowChangeEvent">
+<summary>
+Row event argument class
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSet.PagamentoRowChangeEvent">
+<summary>
+Row event argument class
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSet.PessoaRowChangeEvent">
+<summary>
+Row event argument class
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSet.SecretariaRowChangeEvent">
+<summary>
+Row event argument class
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSet.SeguroRowChangeEvent">
+<summary>
+Row event argument class
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSetTableAdapters.ClienteTableAdapter">
+<summary>
+Represents the connection and commands used to retrieve and save data.
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSetTableAdapters.ClienteTemSeguroTableAdapter">
+<summary>
+Represents the connection and commands used to retrieve and save data.
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSetTableAdapters.ClinicaHospitalarTableAdapter">
+<summary>
+Represents the connection and commands used to retrieve and save data.
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSetTableAdapters.ConsultaTableAdapter">
+<summary>
+Represents the connection and commands used to retrieve and save data.
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSetTableAdapters.FichaTableAdapter">
+<summary>
+Represents the connection and commands used to retrieve and save data.
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSetTableAdapters.FichaDoencasTableAdapter">
+<summary>
+Represents the connection and commands used to retrieve and save data.
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSetTableAdapters.LoginTableAdapter">
+<summary>
+Represents the connection and commands used to retrieve and save data.
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSetTableAdapters.MedicoTableAdapter">
+<summary>
+Represents the connection and commands used to retrieve and save data.
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSetTableAdapters.PagamentoTableAdapter">
+<summary>
+Represents the connection and commands used to retrieve and save data.
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSetTableAdapters.PessoaTableAdapter">
+<summary>
+Represents the connection and commands used to retrieve and save data.
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSetTableAdapters.SecretariaTableAdapter">
+<summary>
+Represents the connection and commands used to retrieve and save data.
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSetTableAdapters.SeguroTableAdapter">
+<summary>
+Represents the connection and commands used to retrieve and save data.
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSetTableAdapters.TableAdapterManager">
+<summary>
+TableAdapterManager is used to coordinate TableAdapters in the dataset to enable Hierarchical Update scenarios
+</summary>
+</member>
+<member name="M:App.SeguradoraSaudeDataSetTableAdapters.TableAdapterManager.UpdateUpdatedRows(App.SeguradoraSaudeDataSet,System.Collections.Generic.List{System.Data.DataRow},System.Collections.Generic.List{System.Data.DataRow})">
+<summary>
+Update rows in top-down order.
+</summary>
+</member>
+<member name="M:App.SeguradoraSaudeDataSetTableAdapters.TableAdapterManager.UpdateInsertedRows(App.SeguradoraSaudeDataSet,System.Collections.Generic.List{System.Data.DataRow})">
+<summary>
+Insert rows in top-down order.
+</summary>
+</member>
+<member name="M:App.SeguradoraSaudeDataSetTableAdapters.TableAdapterManager.UpdateDeletedRows(App.SeguradoraSaudeDataSet,System.Collections.Generic.List{System.Data.DataRow})">
+<summary>
+Delete rows in bottom-up order.
+</summary>
+</member>
+<member name="M:App.SeguradoraSaudeDataSetTableAdapters.TableAdapterManager.GetRealUpdatedRows(System.Data.DataRow[],System.Collections.Generic.List{System.Data.DataRow})">
+<summary>
+Remove inserted rows that become updated rows after calling TableAdapter.Update(inserted rows) first
+</summary>
+</member>
+<member name="M:App.SeguradoraSaudeDataSetTableAdapters.TableAdapterManager.UpdateAll(App.SeguradoraSaudeDataSet)">
+<summary>
+Update all changes to the dataset.
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSetTableAdapters.TableAdapterManager.UpdateOrderOption">
+<summary>
+Update Order Option
+</summary>
+</member>
+<member name="T:App.SeguradoraSaudeDataSetTableAdapters.TableAdapterManager.SelfReferenceComparer">
+<summary>
+Used to sort self-referenced table's rows
+</summary>
+</member>
+</members>
+</doc>

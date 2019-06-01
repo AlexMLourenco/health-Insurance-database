@@ -183,7 +183,7 @@ AS
 
 -- Get a client number when given its NIF (checked)
 GO
-CREATE PROCEDURE [SeguradoraSaude].GetClinicNIF (@clientNIF INT)
+CREATE PROCEDURE [SeguradoraSaude].GetClientNIF (@clientNIF INT)
 AS
     SELECT C.NumCliente
     FROM [SeguradoraSaude].Cliente AS C

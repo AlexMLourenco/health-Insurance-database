@@ -1,0 +1,33 @@
+D:\explicacoes\Alexandre\health-Insurance-database\App\bin\Debug\App.exe.config
+D:\explicacoes\Alexandre\health-Insurance-database\App\bin\Debug\App.exe
+D:\explicacoes\Alexandre\health-Insurance-database\App\bin\Debug\App.pdb
+D:\explicacoes\Alexandre\health-Insurance-database\App\bin\Debug\App.xml
+D:\explicacoes\Alexandre\health-Insurance-database\App\obj\Debug\App.vbprojAssemblyReference.cache
+D:\explicacoes\Alexandre\health-Insurance-database\App\obj\Debug\App.Resources.resources
+D:\explicacoes\Alexandre\health-Insurance-database\App\obj\Debug\App.vbproj.GenerateResource.cache
+D:\explicacoes\Alexandre\health-Insurance-database\App\obj\Debug\App.vbproj.CoreCompileInputs.cache
+D:\explicacoes\Alexandre\health-Insurance-database\App\obj\Debug\App.exe
+D:\explicacoes\Alexandre\health-Insurance-database\App\obj\Debug\App.xml
+D:\explicacoes\Alexandre\health-Insurance-database\App\obj\Debug\App.pdb
+D:\explicacoes\Alexandre\health-Insurance-database\App\obj\Debug\App.FormPrincipal.resources
+D:\explicacoes\Alexandre\health-Insurance-database\App\obj\Debug\App.FormPessoas.resources
+D:\explicacoes\Alexandre\health-Insurance-database\App\obj\Debug\App.FormMedicos.resources
+D:\explicacoes\Alexandre\health-Insurance-database\App\obj\Debug\App.FormClientes.resources
+C:\Users\Alexandre Lourenço\Desktop\AppBD\bin\Debug\App.exe.config
+C:\Users\Alexandre Lourenço\Desktop\AppBD\bin\Debug\App.exe
+C:\Users\Alexandre Lourenço\Desktop\AppBD\bin\Debug\App.pdb
+C:\Users\Alexandre Lourenço\Desktop\AppBD\bin\Debug\App.xml
+C:\Users\Alexandre Lourenço\Desktop\AppBD\obj\Debug\App.vbprojAssemblyReference.cache
+C:\Users\Alexandre Lourenço\Desktop\AppBD\obj\Debug\App.FormClientes.resources
+C:\Users\Alexandre Lourenço\Desktop\AppBD\obj\Debug\App.FormMedicos.resources
+C:\Users\Alexandre Lourenço\Desktop\AppBD\obj\Debug\App.FormPrincipal.resources
+C:\Users\Alexandre Lourenço\Desktop\AppBD\obj\Debug\App.FormSecretarias.resources
+C:\Users\Alexandre Lourenço\Desktop\AppBD\obj\Debug\App.Resources.resources
+C:\Users\Alexandre Lourenço\Desktop\AppBD\obj\Debug\App.vbproj.GenerateResource.cache
+C:\Users\Alexandre Lourenço\Desktop\AppBD\obj\Debug\App.vbproj.CoreCompileInputs.cache
+C:\Users\Alexandre Lourenço\Desktop\AppBD\obj\Debug\App.exe
+C:\Users\Alexandre Lourenço\Desktop\AppBD\obj\Debug\App.xml
+C:\Users\Alexandre Lourenço\Desktop\AppBD\obj\Debug\App.pdb
+C:\Users\Alexandre Lourenço\Desktop\AppBD\obj\Debug\App.FormPagamentos.resources
+C:\Users\Alexandre Lourenço\Desktop\AppBD\obj\Debug\App.FormClinicaHospitalar.resources
+C:\Users\Alexandre Lourenço\Desktop\AppBD\obj\Debug\App.FormConsulta.resources

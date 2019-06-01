@@ -73,7 +73,9 @@ CREATE PROCEDURE [SeguradoraSaude].NewAppointment
     @yearsOldClient INT,
     @yearsOldDoctor INT, 
     @sexClient CHAR(1),
-    @sexDoctor CHAR(1)
+    @sexDoctor CHAR(1),
+    @dateAppoint   CHAR(10), 
+    @hourAppoint   VARCHAR(15)
 AS
 BEGIN
     IF(@salary < 700)
@@ -85,6 +87,8 @@ BEGIN
     INSERT INTO [SeguradoraSaude].Cliente VALUES(@clientNIF);
     INSERT INTO [SeguradoraSaude].ClinicaHospitalar VALUES(@clinicName, @clinicLocalization);
     INSERT INTO [SeguradoraSaude].Medico VALUES(@doctorNIF, CAST(@salary AS INT), @specialization, @clinicNumber);
+    INSERT INTO [SeguradoraSaude].Consulta ([dataConsulta], [hora], [NIFCliente], [NIFMedico], [NumClinica])
+        VALUES(CONVERT(date, @dateAppoint, 105), CAST(@hourAppoint AS TIME), @clientNIF, @doctorNIF, @clinicNumber);
 END
 -- Create new insurance (checked)
 GO
@@ -320,7 +324,7 @@ END
 --------------------------------UPDATE--------------------------------
 ----------------------------------------------------------------------
 
--- Update Client -- Update Doctor -- Update Secretary
+-- Update Client -- Update Doctor -- Update Secretary [correct BD]
 GO
 CREATE PROCEDURE [SeguradoraSaude].UpdateUserInfo
     @name           VARCHAR(30),
@@ -369,12 +373,6 @@ AS
         WHERE NIFSecretaria=@userNIF;
     END
 
-    IF NOT EXISTS(SELECT * FROM [SeguradoraSaude].Pessoa WHERE NIF=@userNIF)
-    BEGIN
-		PRINT 'There is no user with that nif in the database'
-		ROLLBACK TRAN
-	END
-
 -- Update Clinic
 GO
 CREATE PROCEDURE [SeguradoraSaude].UpdateClinic
@@ -415,14 +413,19 @@ CREATE PROCEDURE [SeguradoraSaude].UpdateAppointment
     @sexClient      CHAR(1),
     @salary VARCHAR(15),
     @specialization VARCHAR(30),
-    @numAppointment INT
+    @numAppointment INT,
+    @dateAppoint    CHAR(10),
+    @hourAppoint    VARCHAR(15)
 AS
     IF EXISTS(SELECT * FROM [SeguradoraSaude].Consulta WHERE NumClinica=@numClinic AND NumConsulta=@numAppointment AND NIFCliente=@clientNIF AND NIFMedico=@doctorNIF)
     BEGIN
-        UPDATE [SeguradoraSaude].ClinicaHospitalar
+        UPDATE [SeguradoraSaude].Consulta
         SET
-            NomeClinica = @nameClinic,
-            Localizacao = @localization
+            dataConsulta = @dateAppoint,
+            hora = @hourAppoint,
+            NIFCliente = @clientNIF,
+            NIFMedico = @doctorNIF,
+            NumClinica = @numClinic
         WHERE NumClinica=@numClinic;
     END
     
@@ -845,3 +848,52 @@ AS
     SET NOCOUNT ON;
     SELECT RefPagamento, MetodoPagamento, Codigo, Valor, DataPagamento
     FROM [SeguradoraSaude].Pagamento
+
+--------------------------------GET DATA------------------------------
+----------------------------------------------------------------------
+
+-- Get a client (checked)
+GO
+CREATE PROCEDURE [SeguradoraSaude].GetClientNIF (@clientNIF INT)
+AS
+    SELECT P.Nome, P.NIF, P.Morada, P.Idade, P.Sexo
+    FROM [SeguradoraSaude].Cliente AS C
+    JOIN [SeguradoraSaude].Pessoa AS P
+    ON C.NIFCliente=P.NIF
+    WHERE C.NIFCliente=@clientNIF;
+
+-- Get a doctor (checked)
+GO
+CREATE PROCEDURE [SeguradoraSaude].GetDoctorNIF (@doctorNIF INT)
+AS
+    SELECT P.Nome, P.NIF, P.Morada, P.Idade, P.Sexo, M.Ordenado, M.Especializacao, M.NumClinica
+    FROM [SeguradoraSaude].Medico AS M
+    JOIN [SeguradoraSaude].Pessoa AS P
+    ON M.NIFMedico=P.NIF
+    WHERE M.NIFMedico=@doctorNIF;
+
+-- Get a secretary (checked)
+GO
+CREATE PROCEDURE [SeguradoraSaude].GetSecretaryNIF (@secretaryNIF INT)
+AS
+    SELECT P.Nome, P.NIF, P.Morada, P.Idade, P.Sexo, S.Ordenado
+    FROM [SeguradoraSaude].Secretaria AS S
+    JOIN [SeguradoraSaude].Pessoa AS P
+    ON S.NIFSecretaria=P.NIF
+    WHERE S.NIFSecretaria=@secretaryNIF;
+
+-- Get a clinic (checked)
+GO
+CREATE PROCEDURE [SeguradoraSaude].GetClinicNum (@clinicNum INT)
+AS
+    SELECT CL.NomeClinica, CL.Localizacao
+    FROM [SeguradoraSaude].ClinicaHospitalar AS CL
+    WHERE CL.NumClinica=@clinicNum;
+
+-- Get a appointment (checked)
+GO
+CREATE PROCEDURE [SeguradoraSaude].GetAppointNum (@appointNum INT)
+AS
+    SELECT C.dataConsulta, C.hora, C.NIFCliente, C.NIFMedico, C.NumClinica
+    FROM [SeguradoraSaude].Consulta AS C
+    WHERE C.NumConsulta=@appointNum;
