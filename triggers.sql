@@ -19,6 +19,7 @@ BEGIN
     FROM SeguradoraSaude.Pagamento AS PAY
     WHERE PAY.RefPagamento=@refPAy;
     
+    /*
     SELECT @dataInsurence = DataSeguro -- insurence Date
     FROM SeguradoraSaude.Seguro AS S
     JOIN SeguradoraSaude.ClienteTemSeguro AS CTS
@@ -30,6 +31,7 @@ BEGIN
     JOIN SeguradoraSaude.ClienteTemSeguro AS CTS
     ON S.ID=CTS.ID
     WHERE CTS.NIFCliente=@NIFClient;
+    */
     
     IF(DATEDIFF(MONTH, @dataPay,@dataInsurence) > @carencia)
     BEGIN
