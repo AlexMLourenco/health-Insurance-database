@@ -180,30 +180,3 @@ AS
     SELECT CH.NomeClinica
     FROM [SeguradoraSaude].ClinicaHospitalar AS CH
     WHERE CH.NumClinica=@clinicNum;
-
--- Get a client number when given its NIF (checked)
-GO
-CREATE PROCEDURE [SeguradoraSaude].GetClientNIF (@clientNIF INT)
-AS
-    SELECT C.NumCliente
-    FROM [SeguradoraSaude].Cliente AS C
-    WHERE C.NIFCliente=@clientNIF;
-
--- Get a doctor number when given its NIF (checked)
-GO
-CREATE PROCEDURE [SeguradoraSaude].GetDoctorNIF (@doctorNIF INT)
-AS
-    SELECT M.NumMedico
-    FROM [SeguradoraSaude].Medico AS M
-    WHERE M.NIFMedico=@doctorNIF;
-
--- Get a secretary number when given its NIF (checked)
-GO
-CREATE PROCEDURE [SeguradoraSaude].GetSecretaryNIF (@secretaryNIF INT)
-AS
-    SELECT S.NumFuncionaria
-    FROM [SeguradoraSaude].Secretaria AS S
-    WHERE S.NIFSecretaria=@secretaryNIF;
-
-/* CREATE A PROCEDURE USING 'PERIODO_CARENCIA' AND 'DATA_DIAGNOSTICO' */
-/*  DATEDIFF(month, '2010-03-13', GETDATE())    */
