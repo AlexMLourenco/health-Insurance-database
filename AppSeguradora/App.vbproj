@@ -166,6 +166,12 @@
     <EmbeddedResource Include="FormConsulta.resx">
       <DependentUpon>FormConsulta.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormFicha.resx">
+      <DependentUpon>FormFicha.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormFichaDoenças.resx">
+      <DependentUpon>FormFichaDoenças.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormMedicos.resx">
       <DependentUpon>FormMedicos.vb</DependentUpon>
     </EmbeddedResource>
@@ -177,6 +183,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormSecretarias.resx">
       <DependentUpon>FormSecretarias.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormSeguros.resx">
+      <DependentUpon>FormSeguros.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>

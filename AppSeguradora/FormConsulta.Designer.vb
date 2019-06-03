@@ -51,13 +51,13 @@ Partial Class FormConsulta
         Me.Button5.Name = "Button5"
         Me.Button5.Size = New System.Drawing.Size(100, 28)
         Me.Button5.TabIndex = 57
-        Me.Button5.Text = "Refrescar"
+        Me.Button5.Text = "Refresh"
         Me.Button5.UseVisualStyleBackColor = True
         '
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(709, 228)
+        Me.Label5.Location = New System.Drawing.Point(711, 315)
         Me.Label5.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(39, 17)
@@ -66,7 +66,7 @@ Partial Class FormConsulta
         '
         'txt_sexo
         '
-        Me.txt_sexo.Location = New System.Drawing.Point(709, 252)
+        Me.txt_sexo.Location = New System.Drawing.Point(711, 339)
         Me.txt_sexo.Margin = New System.Windows.Forms.Padding(4)
         Me.txt_sexo.Name = "txt_sexo"
         Me.txt_sexo.Size = New System.Drawing.Size(173, 22)
@@ -75,7 +75,7 @@ Partial Class FormConsulta
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(490, 228)
+        Me.Label4.Location = New System.Drawing.Point(492, 315)
         Me.Label4.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(38, 17)
@@ -84,7 +84,7 @@ Partial Class FormConsulta
         '
         'txt_idade
         '
-        Me.txt_idade.Location = New System.Drawing.Point(490, 252)
+        Me.txt_idade.Location = New System.Drawing.Point(492, 339)
         Me.txt_idade.Margin = New System.Windows.Forms.Padding(4)
         Me.txt_idade.Name = "txt_idade"
         Me.txt_idade.Size = New System.Drawing.Size(173, 22)
@@ -143,7 +143,7 @@ Partial Class FormConsulta
         Me.Button4.Name = "Button4"
         Me.Button4.Size = New System.Drawing.Size(100, 28)
         Me.Button4.TabIndex = 47
-        Me.Button4.Text = "Fechar"
+        Me.Button4.Text = "Close"
         Me.Button4.UseVisualStyleBackColor = True
         '
         'Button3
@@ -153,7 +153,7 @@ Partial Class FormConsulta
         Me.Button3.Name = "Button3"
         Me.Button3.Size = New System.Drawing.Size(100, 28)
         Me.Button3.TabIndex = 46
-        Me.Button3.Text = "Apagar"
+        Me.Button3.Text = "Delete"
         Me.Button3.UseVisualStyleBackColor = True
         '
         'Button2
@@ -163,7 +163,7 @@ Partial Class FormConsulta
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(100, 28)
         Me.Button2.TabIndex = 45
-        Me.Button2.Text = "Editar"
+        Me.Button2.Text = "Edit"
         Me.Button2.UseVisualStyleBackColor = True
         '
         'Button1
@@ -173,7 +173,7 @@ Partial Class FormConsulta
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(100, 28)
         Me.Button1.TabIndex = 44
-        Me.Button1.Text = "Inserir"
+        Me.Button1.Text = "Insert"
         Me.Button1.UseVisualStyleBackColor = True
         '
         'txt_nif
@@ -215,26 +215,26 @@ Partial Class FormConsulta
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(491, 309)
+        Me.Label6.Location = New System.Drawing.Point(489, 237)
         Me.Label6.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(90, 17)
+        Me.Label6.Size = New System.Drawing.Size(103, 17)
         Me.Label6.TabIndex = 71
-        Me.Label6.Text = "Nome Clínica"
+        Me.Label6.Text = "Número Clínica"
         '
         'TextBox1
         '
-        Me.TextBox1.Location = New System.Drawing.Point(491, 333)
+        Me.TextBox1.Location = New System.Drawing.Point(489, 261)
         Me.TextBox1.Margin = New System.Windows.Forms.Padding(4)
         Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(555, 22)
+        Me.TextBox1.Size = New System.Drawing.Size(127, 22)
         Me.TextBox1.TabIndex = 70
         '
         'FormConsulta
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1263, 605)
+        Me.ClientSize = New System.Drawing.Size(1078, 532)
         Me.Controls.Add(Me.Label6)
         Me.Controls.Add(Me.TextBox1)
         Me.Controls.Add(Me.Label11)

@@ -59,9 +59,9 @@ CREATE TABLE SeguradoraSaude.Consulta
     NumConsulta     INT IDENTITY(1,1),
     dataConsulta    DATE NOT NULL,
     hora            TIME NOT NULL,
-    NIFCliente      INT NOT NULL UNIQUE CHECK (NIFCliente >= 000000000 AND NIFCliente <= 999999999),
-    NIFMedico       INT NOT NULL UNIQUE CHECK (NIFMedico >= 000000000 AND NIFMedico <= 999999999),
-    NumClinica      INT NOT NULL UNIQUE CHECK (NumClinica > 0),
+    NIFCliente      INT NOT NULL CHECK (NIFCliente >= 000000000 AND NIFCliente <= 999999999),
+    NIFMedico       INT NOT NULL CHECK (NIFMedico >= 000000000 AND NIFMedico <= 999999999),
+    NumClinica      INT NOT NULL CHECK (NumClinica > 0),
     PRIMARY KEY (NumConsulta),
     FOREIGN KEY(NIFCliente) REFERENCES SeguradoraSaude.Cliente(NIFCliente),
     FOREIGN KEY(NIFMedico) REFERENCES SeguradoraSaude.Medico(NIFMedico),
@@ -76,7 +76,7 @@ CREATE TABLE SeguradoraSaude.Pagamento
     Codigo          INT NOT NULL UNIQUE CHECK (Codigo > 0),
     Valor           INT NOT NULL CHECK (Valor > 0),
     DataPagamento   DATE,
-    NIFSecretaria   INT NOT NULL UNIQUE CHECK (NIFSecretaria >= 000000000 AND NIFSecretaria <= 999999999),
+    NIFSecretaria   INT NOT NULL CHECK (NIFSecretaria >= 000000000 AND NIFSecretaria <= 999999999),
     PRIMARY KEY (RefPagamento),
     FOREIGN KEY (NIFSecretaria) REFERENCES SeguradoraSaude.Secretaria(NIFSecretaria) ON DELETE CASCADE
 )
@@ -87,9 +87,9 @@ CREATE TABLE SeguradoraSaude.Ficha
     NumFicha                INT IDENTITY(1,1), --INT NOT NULL UNIQUE CHECK (NumFicha > 0),
     RelatorioDiagnostico    CHAR(1) NOT NULL,
     ConsultaInternamento    CHAR(1) NOT NULL,
-    NumConsulta             INT NOT NULL UNIQUE CHECK (NumConsulta > 0),
-    NIFCliente              INT NOT NULL UNIQUE CHECK (NIFCliente >= 000000000 AND NIFCliente <= 999999999),
-    RefPagamento            INT NOT NULL UNIQUE,
+    NumConsulta             INT NOT NULL CHECK (NumConsulta > 0),
+    NIFCliente              INT NOT NULL CHECK (NIFCliente >= 000000000 AND NIFCliente <= 999999999),
+    RefPagamento            INT NOT NULL,
     PRIMARY KEY (NumFicha),
     FOREIGN KEY(NIFCliente) REFERENCES SeguradoraSaude.Cliente(NIFCliente),
     FOREIGN KEY (NumConsulta) REFERENCES SeguradoraSaude.Consulta(NumConsulta),
@@ -100,7 +100,7 @@ GO
 CREATE TABLE SeguradoraSaude.FichaDoencas
 (
     ID              INT NOT NULL UNIQUE CHECK (ID > 0),
-    NIFCliente      INT NOT NULL UNIQUE CHECK (NIFCliente >= 000000000 AND NIFCliente <= 999999999),
+    NIFCliente      INT NOT NULL CHECK (NIFCliente >= 000000000 AND NIFCliente <= 999999999),
     TipoDoenca      VARCHAR(30) NOT NULL,
     Estado          BIT NOT NULL,	-- works as a boolean
     DataDiagnostico DATE NOT NULL,

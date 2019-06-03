@@ -23,7 +23,7 @@ Public Class FormConsulta
         If reader.HasRows Then
             While (reader.HasRows)
                 While (reader.Read())
-                    lstList.Items.Add(New KeyValue(reader.GetInt32(1), reader.GetString(0)))
+                    lstList.Items.Add(New KeyValue(reader.GetInt32(0), reader.GetString(3) & " | " & reader.GetDateTime(1)))
                 End While
                 reader.NextResult()
             End While
@@ -116,14 +116,14 @@ Public Class FormConsulta
         If reader.HasRows Then
             'continuar aqui
             reader.Read()
-            txt_nif.Text = reader.GetInt32(0)
-            txt_nome.Text = reader.GetString(1)
-            txt_morada.Text = reader.GetString(2)
-            txt_idade.Text = reader.GetInt32(3)
-            txt_sexo.Text = reader.GetString(4)
-            TextBox1.Text = reader.GetInt32(5)
-            TextBox2.Text = reader.GetString(6)
-            TextBox3.Text = reader.GetInt32(7)
+            txt_nif.Text = reader.GetInt32(2)       'nifCliente
+            TextBox6.Text = reader.GetInt32(3)      'nifMedico
+            txt_nome.Text = reader.GetString(6)     'nomecliente
+            txt_morada.Text = reader.GetString(7)   'nomemedico
+            TextBox1.Text = reader.GetInt32(4)      'numeroClinica
+            'txt_sexo.Text = reader.GetDateTime(1)   'hora
+            txt_idade.Text = reader.GetDateTime(0)  'data
+
 
         End If
 
@@ -139,26 +139,37 @@ Public Class FormConsulta
 
             Dim com As SqlCommand = New SqlCommand()
             com.Connection = Me._con
-            com.CommandText = "SeguradoraSaude.UpdateUserInfo"
+            com.CommandText = "SeguradoraSaude.UpdateAppointment"
             com.CommandType = CommandType.StoredProcedure
 
-            com.Parameters.Add(New SqlParameter("@userNIF", txt_nif.Text))
-            com.Parameters.Add(New SqlParameter("@name", txt_nome.Text))
-            com.Parameters.Add(New SqlParameter("@address", txt_morada.Text))
-            com.Parameters.Add(New SqlParameter("@yearsOld", txt_idade.Text))
-            com.Parameters.Add(New SqlParameter("@sex", txt_sexo.Text))
-            com.Parameters.Add(New SqlParameter("@salary", TextBox1.Text))
-            com.Parameters.Add(New SqlParameter("@specialization", TextBox2.Text))
-            com.Parameters.Add(New SqlParameter("@clinicNumber", TextBox3.Text))
+            com.Parameters.Add(New SqlParameter("@nameClinic", vbNull))
+            com.Parameters.Add(New SqlParameter("@numClinic", TextBox1.Text))
+            com.Parameters.Add(New SqlParameter("@localization", vbNull))
+            com.Parameters.Add(New SqlParameter("@doctorNIF", TextBox6.Text))
+            com.Parameters.Add(New SqlParameter("@nameDoctor", txt_morada.Text))
+            com.Parameters.Add(New SqlParameter("@addressDoctor", vbNull))
+            com.Parameters.Add(New SqlParameter("@yearsOldDoctor", vbNull))
+            com.Parameters.Add(New SqlParameter("@sexDoctor", vbNull))
+            com.Parameters.Add(New SqlParameter("@clientNIF", txt_nif.Text))
+            com.Parameters.Add(New SqlParameter("@clientNumber", vbNull))
+            com.Parameters.Add(New SqlParameter("@nameClient", txt_nome.Text))
+            com.Parameters.Add(New SqlParameter("@addressClient", vbNull))
+            com.Parameters.Add(New SqlParameter("@yearsOldClient", vbNull))
+            com.Parameters.Add(New SqlParameter("@sexClient", vbNull))
+            com.Parameters.Add(New SqlParameter("@salary", vbNull))
+            com.Parameters.Add(New SqlParameter("@specialization", vbNull))
+            com.Parameters.Add(New SqlParameter("@numAppointment", vbNull))
+            com.Parameters.Add(New SqlParameter("@dateAppoint", txt_idade.Text))
+            com.Parameters.Add(New SqlParameter("@hourAppoint", vbNull)) 'txt_sexo.Text
 
             Dim res As Integer
 
             res = com.ExecuteNonQuery()
 
             If (res = -1) Then
-                MsgBox("Pessoa não Existe")
+                MsgBox("Consulta não Existe")
             Else
-                MsgBox("Atualizado com sucesso")
+                MsgBox("Atualizada/Adicionada com sucesso")
             End If
 
         Catch ex As Exception
@@ -184,7 +195,7 @@ Public Class FormConsulta
     End Sub
 
     Private Sub TextBox1_TextChanged(sender As Object, e As EventArgs) Handles TextBox1.TextChanged
-        'clinicName
+        'clinicNum
     End Sub
 
     Private Sub txt_idade_TextChanged(sender As Object, e As EventArgs) Handles txt_idade.TextChanged
@@ -194,4 +205,34 @@ Public Class FormConsulta
     Private Sub txt_sexo_TextChanged(sender As Object, e As EventArgs) Handles txt_sexo.TextChanged
         'hour
     End Sub
+
+    Private Sub lstList_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lstList.SelectedIndexChanged
+        Dim _item As KeyValue
+        _item = lstList.SelectedItem
+        carregar(_item.key)
+    End Sub
+
+    Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
+        Me.refrescar()
+    End Sub
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        Me.inserir()
+    End Sub
+
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+        Me.atualizar()
+    End Sub
+
+    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
+        Dim nif As String
+
+        nif = InputBox("Introduzir o Numero da Consulta", "Eliminar", 0)
+        Me.eliminar(nif)
+    End Sub
+
+    Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
+        Me.Close()
+    End Sub
+
 End Class

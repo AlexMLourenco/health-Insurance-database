@@ -105,8 +105,8 @@ Public Class FormSecretarias
         If reader.HasRows Then
 
             reader.Read()
-            txt_nome.Text = reader.GetString(0)
             txt_nif.Text = reader.GetInt32(1)
+            txt_nome.Text = reader.GetString(0)
             txt_morada.Text = reader.GetString(2)
             txt_idade.Text = reader.GetInt32(3)
             txt_sexo.Text = reader.GetString(4)
@@ -122,8 +122,6 @@ Public Class FormSecretarias
         Me._con.Open()
 
         Try
-
-
             Dim com As SqlCommand = New SqlCommand()
             com.Connection = Me._con
             com.CommandText = "SeguradoraSaude.UpdateUserInfo"
@@ -135,13 +133,15 @@ Public Class FormSecretarias
             com.Parameters.Add(New SqlParameter("@yearsOld", txt_idade.Text))
             com.Parameters.Add(New SqlParameter("@sex", txt_sexo.Text))
             com.Parameters.Add(New SqlParameter("@salary", TextBox1.Text))
+            com.Parameters.Add(New SqlParameter("@specialization", vbNull))
+            com.Parameters.Add(New SqlParameter("@clinicNumber", vbNull))
 
             Dim res As Integer
 
             res = com.ExecuteNonQuery()
 
             If (res = -1) Then
-                MsgBox("Pessoa não Existe")
+                MsgBox("Pessoa Atualizada/Adicionada")
             Else
                 MsgBox("Atualizado com sucesso")
             End If

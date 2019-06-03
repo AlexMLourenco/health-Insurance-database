@@ -23,7 +23,7 @@ Public Class FormClinicaHospitalar
         If reader.HasRows Then
             While (reader.HasRows)
                 While (reader.Read())
-                    lstList.Items.Add(New KeyValue(reader.GetInt32(1), reader.GetString(0)))
+                    lstList.Items.Add(New KeyValue(reader.GetInt32(1), reader.GetString(0) & " | Number: " & reader.GetInt32(1)))
                 End While
                 reader.NextResult()
             End While
@@ -46,7 +46,6 @@ Public Class FormClinicaHospitalar
 
             com.Parameters.Add(New SqlParameter("@clinicName", txt_nif.Text))
             com.Parameters.Add(New SqlParameter("@localization", txt_nome.Text))
-            com.Parameters.Add(New SqlParameter("@numClinic", TextBox1.Text))
 
             com.ExecuteNonQuery()
 
@@ -122,18 +121,18 @@ Public Class FormClinicaHospitalar
             com.CommandText = "SeguradoraSaude.UpdateClinic"
             com.CommandType = CommandType.StoredProcedure
 
+            com.Parameters.Add(New SqlParameter("@numClinic", TextBox1.Text))
             com.Parameters.Add(New SqlParameter("@nameClinic", txt_nif.Text))
             com.Parameters.Add(New SqlParameter("@localization", txt_nome.Text))
-            com.Parameters.Add(New SqlParameter("@numClinic", TextBox1.Text))
 
             Dim res As Integer
 
             res = com.ExecuteNonQuery()
 
             If (res = -1) Then
-                MsgBox("Clinica não Existe")
+                MsgBox("Não foi possível atualizar a clinica")
             Else
-                MsgBox("Atualizado com sucesso")
+                MsgBox("Clinica Atualizada/Adicionada")
             End If
 
         Catch ex As Exception
@@ -148,10 +147,6 @@ Public Class FormClinicaHospitalar
 
     Private Sub txt_nome_TextChanged(sender As Object, e As EventArgs) Handles txt_nome.TextChanged
         'localizacao
-    End Sub
-
-    Private Sub TextBox1_TextChanged(sender As Object, e As EventArgs) Handles TextBox1.TextChanged
-        'numeroClinica
     End Sub
 
     Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
@@ -175,11 +170,15 @@ Public Class FormClinicaHospitalar
     Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
         Dim nif As String
 
-        nif = InputBox("Introduzir o NIF", "Eliminar", 0)
+        nif = InputBox("Introduzir o numero da clínica", "Eliminar", 0)
         Me.eliminar(nif)
     End Sub
 
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
         Me.Close()
+    End Sub
+
+    Private Sub TextBox1_TextChanged(sender As Object, e As EventArgs) Handles TextBox1.TextChanged
+        'numeroClinica
     End Sub
 End Class

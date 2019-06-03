@@ -31,3 +31,6 @@ C:\Users\Alexandre Lourenço\Desktop\AppBD\obj\Debug\App.pdb
 C:\Users\Alexandre Lourenço\Desktop\AppBD\obj\Debug\App.FormPagamentos.resources
 C:\Users\Alexandre Lourenço\Desktop\AppBD\obj\Debug\App.FormClinicaHospitalar.resources
 C:\Users\Alexandre Lourenço\Desktop\AppBD\obj\Debug\App.FormConsulta.resources
+C:\Users\Alexandre Lourenço\Desktop\AppBD\obj\Debug\App.FormFicha.resources
+C:\Users\Alexandre Lourenço\Desktop\AppBD\obj\Debug\App.FormFichaDoenças.resources
+C:\Users\Alexandre Lourenço\Desktop\AppBD\obj\Debug\App.FormSeguros.resources

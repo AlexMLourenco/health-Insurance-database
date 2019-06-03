@@ -288,8 +288,8 @@ BEGIN
         INSERT INTO SeguradoraSaude.ClinicaHospitalar VALUES(@clinicName, @clinicLocalization);
     END
 
-    INSERT INTO [SeguradoraSaude].ClinicaHospitalar ([NomeClinica], [Localizacao])
-    VALUES (@clinicName, @clinicLocalization);
+    INSERT INTO [SeguradoraSaude].Ficha ([RelatorioDiagnostico], [ConsultaInternamento], [NumConsulta], [NIFCliente], [RefPagamento])
+    VALUES (@Rd, @Ci, @appointmentNumber, @clientNIF, @refPay);
 END
 -- Create Payment
 GO
@@ -822,16 +822,22 @@ GO
 CREATE PROCEDURE [SeguradoraSaude].GetAppointmentList
 AS
     SET NOCOUNT ON;
-    SELECT NumConsulta, dataConsulta, hora
-    FROM [SeguradoraSaude].Consulta;
+    SELECT C.NumConsulta, C.dataConsulta, C.hora, P.Nome
+    FROM [SeguradoraSaude].Consulta AS C
+    JOIN [SeguradoraSaude].Pessoa AS P
+    ON C.NIFCliente=P.NIF;
 
 -- Get insurences list (checked)
 GO
 CREATE PROCEDURE [SeguradoraSaude].GetInsurenceList
 AS
     SET NOCOUNT ON;
-    SELECT ID, Tipo, Cota, Carencia, DataSeguro
-    FROM [SeguradoraSaude].Seguro
+    SELECT S.Tipo, S.Cota, S.Carencia, S.DataSeguro, TS.NIFCliente, S.ID, P.Nome
+    FROM [SeguradoraSaude].Seguro AS S
+    JOIN [SeguradoraSaude].ClienteTemSeguro AS TS
+    ON S.ID=TS.ID 
+    JOIN [SeguradoraSaude].Pessoa AS P
+    ON TS.NIFCliente=P.NIF
 
 -- Get files list (checked)
 GO
@@ -846,8 +852,10 @@ GO
 CREATE PROCEDURE [SeguradoraSaude].GetDiseasesList
 AS
     SET NOCOUNT ON;
-    SELECT ID, NIFCliente, TipoDoenca, Estado, DataDiagnostico, NumFicha
-    FROM [SeguradoraSaude].FichaDoencas
+    SELECT FD.ID, FD.NIFCliente, FD.TipoDoenca, FD.Estado, FD.DataDiagnostico, FD.NumFicha, P.Nome
+    FROM [SeguradoraSaude].FichaDoencas AS FD
+    JOIN [SeguradoraSaude].Pessoa AS P
+    ON FD.NIFCliente=P.NIF
     
 -- Get payments list (checked)
 GO
@@ -864,7 +872,7 @@ AS
 GO
 CREATE PROCEDURE [SeguradoraSaude].GetClientNIF (@clientNIF INT)
 AS
-    SELECT P.Nome, P.NIF, P.Morada, P.Idade, P.Sexo
+    SELECT P.Nome, P.NIF, P.Morada, P.Idade, P.Sexo, C.NumCliente
     FROM [SeguradoraSaude].Cliente AS C
     JOIN [SeguradoraSaude].Pessoa AS P
     ON C.NIFCliente=P.NIF
@@ -874,7 +882,7 @@ AS
 GO
 CREATE PROCEDURE [SeguradoraSaude].GetDoctorNIF (@doctorNIF INT)
 AS
-    SELECT P.Nome, P.NIF, P.Morada, P.Idade, P.Sexo, M.Ordenado, M.Especializacao, M.NumClinica
+    SELECT P.Nome, P.NIF, P.Morada, P.Idade, P.Sexo, M.Ordenado, M.Especializacao, M.NumClinica, M.NumMedico
     FROM [SeguradoraSaude].Medico AS M
     JOIN [SeguradoraSaude].Pessoa AS P
     ON M.NIFMedico=P.NIF
@@ -884,7 +892,7 @@ AS
 GO
 CREATE PROCEDURE [SeguradoraSaude].GetSecretaryNIF (@secretaryNIF INT)
 AS
-    SELECT P.Nome, P.NIF, P.Morada, P.Idade, P.Sexo, S.Ordenado
+    SELECT P.Nome, P.NIF, P.Morada, P.Idade, P.Sexo, S.Ordenado, S.NumFuncionaria
     FROM [SeguradoraSaude].Secretaria AS S
     JOIN [SeguradoraSaude].Pessoa AS P
     ON S.NIFSecretaria=P.NIF
@@ -894,7 +902,7 @@ AS
 GO
 CREATE PROCEDURE [SeguradoraSaude].GetClinicNum (@clinicNum INT)
 AS
-    SELECT CL.NomeClinica, CL.Localizacao
+    SELECT CL.NomeClinica, CL.Localizacao, CL.NumClinica
     FROM [SeguradoraSaude].ClinicaHospitalar AS CL
     WHERE CL.NumClinica=@clinicNum;
 
@@ -902,15 +910,19 @@ AS
 GO
 CREATE PROCEDURE [SeguradoraSaude].GetAppointNum (@appointNum INT)
 AS
-    SELECT C.dataConsulta, C.hora, C.NIFCliente, C.NIFMedico, C.NumClinica
+    SELECT C.dataConsulta, C.hora, C.NIFCliente, C.NIFMedico, C.NumClinica, C.NumConsulta, PC.Nome, PM.Nome
     FROM [SeguradoraSaude].Consulta AS C
+    JOIN [SeguradoraSaude].Pessoa AS PC
+    ON C.NIFCliente=PC.NIF
+    JOIN [SeguradoraSaude].Pessoa AS PM
+    ON C.NIFMedico=PM.NIF
     WHERE C.NumConsulta=@appointNum;
 
 -- Get a file (checked)
 GO
 CREATE PROCEDURE [SeguradoraSaude].GetFileNum (@fileNum INT)
 AS
-    SELECT F.RelatorioDiagnostico, F.ConsultaInternamento, F.NumConsulta, F.NIFCliente, F.RefPagamento
+    SELECT F.RelatorioDiagnostico, F.ConsultaInternamento, F.NumConsulta, F.NIFCliente, F.RefPagamento, F.NumFicha
     FROM [SeguradoraSaude].Ficha AS F
     WHERE F.NumFicha=@fileNum;
 
@@ -918,7 +930,7 @@ AS
 GO
 CREATE PROCEDURE [SeguradoraSaude].GetDiseaseID (@diseaseID INT)
 AS
-    SELECT FD.NIFCliente, FD.TipoDoenca, FD.Estado, FD.DataDiagnostico, FD.NumFicha
+    SELECT FD.NIFCliente, FD.TipoDoenca, FD.Estado, FD.DataDiagnostico, FD.NumFicha, FD.ID
     FROM [SeguradoraSaude].FichaDoencas AS FD
     WHERE FD.ID=@diseaseID;
 
@@ -926,16 +938,16 @@ AS
 GO
 CREATE PROCEDURE [SeguradoraSaude].GetInsurenceID (@insurenceID INT)
 AS
-    SELECT S.Tipo, S.Cota, S.Carencia, S.DataSeguro, TS.NIFCliente
+    SELECT S.Tipo, S.Cota, S.Carencia, S.DataSeguro, TS.NIFCliente, S.ID
     FROM [SeguradoraSaude].Seguro AS S
     JOIN [SeguradoraSaude].ClienteTemSeguro AS TS
-    ON S.ID=TS.ID 
+    ON S.ID=TS.ID
     WHERE S.ID=@insurenceID;
 
 -- Get a payment (checked)
 GO
 CREATE PROCEDURE [SeguradoraSaude].GetPayRef (@payRef INT)
 AS
-    SELECT P.MetodoPagamento, P.Codigo, P.Valor, P.DataPagamento, P.NIFSecretaria
+    SELECT P.MetodoPagamento, P.Codigo, P.Valor, P.DataPagamento, P.NIFSecretaria, P.RefPagamento
     FROM [SeguradoraSaude].Pagamento AS P
     WHERE P.RefPagamento=@payRef;

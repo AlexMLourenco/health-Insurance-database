@@ -67,7 +67,7 @@ Partial Class FormSecretarias
         Me.Button5.Name = "Button5"
         Me.Button5.Size = New System.Drawing.Size(100, 28)
         Me.Button5.TabIndex = 57
-        Me.Button5.Text = "Refrescar"
+        Me.Button5.Text = "Refresh"
         Me.Button5.UseVisualStyleBackColor = True
         '
         'Label5
@@ -159,7 +159,7 @@ Partial Class FormSecretarias
         Me.Button4.Name = "Button4"
         Me.Button4.Size = New System.Drawing.Size(100, 28)
         Me.Button4.TabIndex = 47
-        Me.Button4.Text = "Fechar"
+        Me.Button4.Text = "Close"
         Me.Button4.UseVisualStyleBackColor = True
         '
         'Button3
@@ -169,7 +169,7 @@ Partial Class FormSecretarias
         Me.Button3.Name = "Button3"
         Me.Button3.Size = New System.Drawing.Size(100, 28)
         Me.Button3.TabIndex = 46
-        Me.Button3.Text = "Apagar"
+        Me.Button3.Text = "Delete"
         Me.Button3.UseVisualStyleBackColor = True
         '
         'Button2
@@ -179,7 +179,7 @@ Partial Class FormSecretarias
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(100, 28)
         Me.Button2.TabIndex = 45
-        Me.Button2.Text = "Editar"
+        Me.Button2.Text = "Edit"
         Me.Button2.UseVisualStyleBackColor = True
         '
         'Button1
@@ -189,7 +189,7 @@ Partial Class FormSecretarias
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(100, 28)
         Me.Button1.TabIndex = 44
-        Me.Button1.Text = "Inserir"
+        Me.Button1.Text = "Insert"
         Me.Button1.UseVisualStyleBackColor = True
         '
         'txt_nif
@@ -233,7 +233,7 @@ Partial Class FormSecretarias
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.txt_nif)
         Me.Controls.Add(Me.lstList)
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.Name = "FormSecretarias"
         Me.Text = "FormSecretarias"
         Me.ResumeLayout(False)

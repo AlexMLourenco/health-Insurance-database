@@ -141,7 +141,7 @@ Public Class FormClientes
             res = com.ExecuteNonQuery()
 
             If (res = -1) Then
-                MsgBox("Pessoa não Existe")
+                MsgBox("Pessoa Atualizada/Adicionada")
             Else
                 MsgBox("Atualizado com sucesso")
             End If
