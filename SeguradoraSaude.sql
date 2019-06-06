@@ -20,7 +20,6 @@ CREATE TABLE SeguradoraSaude.Cliente
     FOREIGN KEY (NIFCliente) REFERENCES SeguradoraSaude.Pessoa(NIF) ON DELETE CASCADE
 )
 
-
 GO
 CREATE TABLE SeguradoraSaude.ClinicaHospitalar
 (
