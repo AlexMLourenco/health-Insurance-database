@@ -23,7 +23,7 @@ Public Class FormPagamentos
         If reader.HasRows Then
             While (reader.HasRows)
                 While (reader.Read())
-                    lstList.Items.Add(New KeyValue(reader.GetInt32(2), reader.GetInt32(0) & " | " & reader.GetInt32(3) & "€"))
+                    lstList.Items.Add(New KeyValue(reader.GetInt32(0), reader.GetInt32(0) & " | " & reader.GetInt32(3) & "€"))
                 End While
                 reader.NextResult()
             End While
