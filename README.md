@@ -12,7 +12,6 @@
 	
 ## Procedures and Triggers
 
-	-> appProcedures.sql
 	-> procedures.sql
 	-> triggers.sql
 	
